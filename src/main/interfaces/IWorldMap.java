@@ -1,0 +1,34 @@
+package main.interfaces;
+
+import main.elements.Animal;
+import main.math.Vector2d;
+
+public interface IWorldMap {
+
+    boolean canMoveTo(Vector2d position);
+
+
+    //boolean place(Animal animal);
+
+    boolean isOccupied(Vector2d position);
+
+    Object objectAt(Vector2d position);
+
+    Vector2d getWorldMapUpperRight();
+    Vector2d getWorldMapLowerLeft();
+
+    Animal placeAnimal(int initialEnergy);
+
+    void addGrass();
+
+    String toString();
+
+    void updateAnimalOrientations();
+
+    void eatGrass(int energyFromGrass);
+    void removeDeadAnimals();
+
+
+
+
+}
