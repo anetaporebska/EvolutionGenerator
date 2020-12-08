@@ -26,6 +26,9 @@ public class World {
         //TODO efektywna struktura pozwalająca mi na przechowywanie informacji o wszystkich zwierzątkach na danej pozycji
 
 
+        // TODO klasa Genome
+        // każdy Animal ma Genome
+
 
     }
 }

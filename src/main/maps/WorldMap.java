@@ -15,6 +15,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
 public class WorldMap implements IWorldMap, IPositionChangeObserver {
     // TODO dodać resztę metod do IWorldMap
 
@@ -104,6 +106,8 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         // addGrass()
         // removeDeadAnimals
     //}
+
+
     // tylko dla zwierzęcia, wystarczy sprawdzić czy nie wychodzi poza mapę
 
     public boolean canMoveTo(Vector2d position){
@@ -220,10 +224,120 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     }
 
-    public void removeDeadAnimals(){
-        // przejrzeć wszystkie zwierzęta i sprawdzić czy nie trzeba usunąć jakiegoś które jest martwe
+    public void removeAnimal(Animal animal){
+
+        ArrayList<Animal> arrayList = animals.get(animal.getPosition());
+        arrayList.remove(animal);
+
+
     }
 
+    public int getNumberOfGrass(){
+        return grass.keySet().size();
+    }
+
+    //Map<Vector2d, ArrayList<Animal>> animals = new LinkedHashMap<>();
+    public void reproductionOfAnimals(){
+
+        for (Vector2d vector2d : animals.keySet()){
+
+            ArrayList<Animal> animalsOnPosition = animals.get(vector2d);
+            if (animalsOnPosition.toArray().length==2){
+                Animal animalChild = mixAnimals(animalsOnPosition.get(0), animalsOnPosition.get(1), vector2d);
+
+            }
+            else if (animalsOnPosition.toArray().length>2){
+                // TODO find 2 strongest ones
+
+
+            }
+
+        }
+
+    }
+
+    private Animal findTheStrongest(int upperEnergyLimit, ArrayList<Animal> animals){
+        Animal strongestAnimal = null;
+        int energy = 0;
+        for(Animal animal: animals){
+            int animalEnergy = animal.getAnimalEnergy();
+            if(animalEnergy > energy && animalEnergy < upperEnergyLimit ){
+                strongestAnimal = animal;
+                energy = animalEnergy;
+            }
+        }
+        return strongestAnimal;
+    }
+
+
+    private Animal mixAnimals(Animal animal1, Animal animal2, Vector2d position){
+
+        //TODO check if they can reproduce, if they have more than 50 % of initial energy
+
+
+
+        // get new genome
+
+        int idx = randomizer.randomIndex();
+        int a = randomizer.randomParent();
+        int [] array1;
+        int [] array2;
+        if (a == 0 ){ // biorę pierwszą część genomu od animal1
+            array1 = animal1.getGenes(0,idx);
+            array2 = animal2.getGenes(idx,32);
+        }
+        else{
+            array1 = animal2.getGenes(0,idx);
+            array2 = animal1.getGenes(idx,32);
+        }
+        int len1 = array1.length;
+        int len2 = array2.length;
+
+        int [] result = new int[len1+len2];
+        System.arraycopy(array1,0,result,0,len1);
+        System.arraycopy(array2, 0, result, len1, len2);
+
+
+        // manage energy
+
+        int energy1 = animal1.getAnimalEnergy()/4;
+        int energy2 =animal2.getAnimalEnergy()/4;
+
+        animal1.useEnergy(energy1);
+        animal2.useEnergy(energy2);
+
+
+        // randomize position for child
+        int i = 0;
+        AnimalOrientation newOrientation = randomizer.randomOrientation();
+        Vector2d newPosition = position.add(newOrientation.toUnitVector());
+        while (isOccupied(newPosition) || !canMoveTo(newPosition)){
+            newOrientation.next();
+            newPosition = position.add(newOrientation.toUnitVector());
+            i+=1;
+            if (i==8){      // all positions are occupied
+
+                while(!canMoveTo(newPosition)){
+                    newOrientation.next();
+                    newPosition = position.add(newOrientation.toUnitVector());
+                }
+
+                break;
+            }
+        }
+
+
+        Animal child = new Animal(newPosition,energy1+energy2, this, result);
+
+
+        // check whether child has all possible genes
+        child.checkGenes();
+
+
+
+        return child;
+
+    }
 
 
 

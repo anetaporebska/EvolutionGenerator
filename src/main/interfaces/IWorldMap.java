@@ -26,7 +26,8 @@ public interface IWorldMap {
     void updateAnimalOrientations();
 
     void eatGrass(int energyFromGrass);
-    void removeDeadAnimals();
+    void removeAnimal(Animal animal);
+    int getNumberOfGrass();
 
 
 

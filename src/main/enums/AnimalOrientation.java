@@ -50,6 +50,20 @@ public enum AnimalOrientation {
 
     }
 
+    public static AnimalOrientation intToOrientation(int val){
+        switch (val){
+            case 0: return NORTH;
+            case 1: return NORTHEAST;
+            case 2: return EAST;
+            case 3: return SOUTHEAST;
+            case 4: return SOUTH;
+            case 5: return SOUTHWEST;
+            case 6: return WEST;
+            case 7: return NORTHWEST;
+            default: return null;
+        }
+    }
+
 
 
 }

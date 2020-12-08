@@ -1,11 +1,13 @@
 package main.elements;
 
+import main.Randomizer;
 import main.enums.AnimalOrientation;
 import main.math.Vector2d;
 import main.interfaces.IPositionChangeObserver;
 import main.interfaces.IWorldMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Animal{
@@ -15,7 +17,8 @@ public class Animal{
     protected IWorldMap map;
     // tu potrzebujemy mieć posortowane liczby 0-7, losując ruch na następny dzień losujemy indeks 0-31
     // ma mieć długość 32 -> na początku 8X4 każda orientacja z takim samym prawdopodobieństwem
-    public int [] genome = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8};
+    private int [] initialGenome = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8};
+    public int [] genome;
     private int noGenes = 32;
 
     // na początku będzie zainicjowana jakaś energia, którą określimy, zwierzęta które powstaną po kopulacji, będą dostawać określoną energię
@@ -24,14 +27,25 @@ public class Animal{
 
     // chciałabym reprezentować każde zwierzę jako kółko jakiegoś koloru z liczbą w środku równą jego aktualnej energii
 
-
+    Randomizer randomizer = new Randomizer();
 
     public Animal(Vector2d position, int initialEnergy, IWorldMap map){
         this.map = map;
         this.position = position;
         this.animalEnergy = initialEnergy;
-        this.orientation = AnimalOrientation.NORTH; // TODO generować losową orientację
+        this.orientation = randomizer.randomOrientation();
+        this.genome = initialGenome;
     }
+
+
+    public Animal(Vector2d position, int initialEnergy, IWorldMap map, int [] genome){
+        this.map = map;
+        this.position = position;
+        this.animalEnergy = initialEnergy;
+        this.orientation = randomizer.randomOrientation();
+        this.genome=genome;
+    }
+
 
     public AnimalOrientation getOrientation() {
         return this.orientation;
@@ -104,6 +118,14 @@ public class Animal{
             case SOUTHWEST: return "SW";
             default: return "";
         }
+    }
+
+    public int [] getGenes(int startIndex, int endIndex){
+        return Arrays.copyOfRange(genome, startIndex, endIndex);
+    }
+
+    public void checkGenes(){
+        // TODO sprawdzić czy wszystkie geny posiada nasze zwierzątko
     }
 
 

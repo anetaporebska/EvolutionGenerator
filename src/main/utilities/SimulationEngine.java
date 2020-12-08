@@ -1,5 +1,6 @@
 package main.utilities;
 
+import main.math.Statistics;
 import main.math.Vector2d;
 import main.elements.Animal;
 import main.enums.MoveDirection;
@@ -14,6 +15,7 @@ public class SimulationEngine implements IEngine {
 
     private IWorldMap map;
     private List<Animal> animals = new ArrayList<>();
+    private Statistics statistics = new Statistics();
 
     public SimulationEngine(IWorldMap map, int initialNoAnimals, int initialEnergy, int initialNoGrass ){
         this.map = map;
@@ -35,10 +37,21 @@ public class SimulationEngine implements IEngine {
 
         // eatGrass + updateEnergy
 
+        removeDeadAnimals();
+        int numberOfAnimals = statistics.getNumberOfAnimals(animals);
+
+        System.out.println("Liczba zwierząt: " + Integer.toString(numberOfAnimals));
+
+        int numberOfGrass = map.getNumberOfGrass();
+        System.out.println("Liczba traw: " + Integer.toString(numberOfGrass));
 
         // reproductionOfAnimals
-        // addGrass()
-        // removeDeadAnimals
+
+
+
+        map.addGrass();
+
+
     }
 
     private void moveAnimals(){
@@ -58,7 +71,22 @@ public class SimulationEngine implements IEngine {
     }
 
 
+    public void removeDeadAnimals(){
+        // przejrzeć wszystkie zwierzęta i sprawdzić czy nie trzeba usunąć jakiegoś które jest martwe
+        List<Animal> animalsToDelete = new ArrayList<>();
+        for(Animal animal: animals){
+            if (animal.checkIfDead()){
+                map.removeAnimal(animal);
+                animalsToDelete.add(animal);
+            }
+        }
+        for(Animal animal: animalsToDelete){
+            animals.remove(animal);
+        }
+        animalsToDelete.clear();
 
+
+    }
 
 
 

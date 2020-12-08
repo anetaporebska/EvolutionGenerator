@@ -3,6 +3,7 @@ package main;
 import main.elements.Animal;
 import main.elements.Grass;
 import main.elements.MapElement;
+import main.enums.AnimalOrientation;
 import main.math.Vector2d;
 
 import java.util.Random;
@@ -29,6 +30,28 @@ public class Randomizer {
 
     // dla trawy poza dżunglą
     public void randomizeGrassSavanna(Vector2d jungleLowerLeft, Vector2d jungleUpperRight, Vector2d WorldMapUpperRight, Vector2d WorldMapLowerLeft){
+
+    }
+
+    public int randomParent(){
+        return random.nextInt(2);
+    }
+
+    public int randomIndex(){
+        return random.nextInt(32);
+    }
+
+
+    public Vector2d randomPosition(Vector2d lowerLeft, Vector2d upperRight){
+        int x = random.nextInt(upperRight.x- lowerLeft.x+1)+lowerLeft.x;
+        int y = random.nextInt(upperRight.y - lowerLeft.y +1 ) + lowerLeft.y;
+        return new Vector2d(x,y);
+
+    }
+
+    public AnimalOrientation randomOrientation(){
+        int x = random.nextInt(8);
+        return AnimalOrientation.intToOrientation(x);
 
     }
 
