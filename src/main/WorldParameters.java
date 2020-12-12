@@ -13,79 +13,79 @@ public class WorldParameters {
     private int numberOfDays;
 
 
-    void setInitialEnergy(int initialEnergy){
+    public void setInitialEnergy(int initialEnergy){
         this.initialEnergy = initialEnergy;
     }
 
-    int getInitialEnergy(){
+    public int getInitialEnergy(){
         return initialEnergy;
     }
 
-    void setInitialNoAnimals(int initialNoAnimals){
+    public void setInitialNoAnimals(int initialNoAnimals){
         this.initialNoAnimals = initialNoAnimals;
     }
 
-    int getInitialNoAnimals(){
+    public int getInitialNoAnimals(){
         return initialNoAnimals;
     }
 
 
-    void setInitialNoGrass(int initialNoGrass){
+    public void setInitialNoGrass(int initialNoGrass){
         this.initialNoGrass = initialNoGrass;
     }
 
-    int getInitialNoGrass(){
+    public int getInitialNoGrass(){
         return initialNoGrass;
     }
 
 
-    void setJungleWidth(int jungleWidth){
+    public void setJungleWidth(int jungleWidth){
         this.jungleWidth = jungleWidth;
     }
 
-    int getJungleWidth(){
+    public int getJungleWidth(){
         return jungleWidth;
     }
 
 
-    void setJungleHeight(int jungleHeight){
+    public void setJungleHeight(int jungleHeight){
         this.jungleHeight = jungleHeight;
     }
 
-    int getJungleHeight(){
+    public int getJungleHeight(){
         return jungleHeight;
     }
 
-    void setWorldWidth(int worldWidth){
+    public void setWorldWidth(int worldWidth){
         this.worldWidth = worldWidth;
     }
 
-    int getWorldWidth(){
+    public int getWorldWidth(){
         return worldWidth;
     }
 
-    void setWorldHeight(int worldHeight){
+    public void setWorldHeight(int worldHeight){
         this.worldHeight = worldHeight;
     }
 
-    int getWorldHeight(){
+    public int getWorldHeight(){
         return worldHeight;
     }
 
 
-    void setEnergyFromGrass(int energyFromGrass){
+    public void setEnergyFromGrass(int energyFromGrass){
         this.energyFromGrass = energyFromGrass;
     }
 
-    int getEnergyFromGrass(){
+    public int getEnergyFromGrass(){
         return energyFromGrass;
     }
 
-    void setNumberOfDays(int numberOfDays){
+    public void setNumberOfDays(int numberOfDays){
         this.numberOfDays = numberOfDays;
     }
 
-    int getNumberOfDays(){
+    public int getNumberOfDays(){
         return numberOfDays;
     }
 

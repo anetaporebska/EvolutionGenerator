@@ -10,7 +10,6 @@ public class LaunchPage implements ActionListener {
 
     WorldParameters worldParameters = new WorldParameters();
 
-    // przechwytywanie parametróœ
     JTextField initialEnergy;
     JTextField initialNoAnimals;
     JTextField initialNoGrass;
@@ -62,31 +61,31 @@ public class LaunchPage implements ActionListener {
 
 
 
-        initialEnergy = new JTextField();
+        initialEnergy = new JTextField("10");
         initialEnergy.setBounds(10,30,400,30);
 
-        initialNoAnimals = new JTextField();
+        initialNoAnimals = new JTextField("4");
         initialNoAnimals.setBounds(10,90,400,30);
 
-        initialNoGrass = new JTextField();
+        initialNoGrass = new JTextField("10");
         initialNoGrass.setBounds(10,150,400,30);
 
-        jungleWidth = new JTextField();
+        jungleWidth = new JTextField("4");
         jungleWidth.setBounds(10,210,400,30);
 
-        jungleHeight = new JTextField();
+        jungleHeight = new JTextField("4");
         jungleHeight.setBounds(10,270,400,30);
 
-        worldWidth = new JTextField();
+        worldWidth = new JTextField("10");
         worldWidth.setBounds(10,330,400,30);
 
-        worldHeight = new JTextField();
+        worldHeight = new JTextField("10");
         worldHeight.setBounds(10,390,400,30);
 
-        energyFromGrass = new JTextField();
+        energyFromGrass = new JTextField("1");
         energyFromGrass.setBounds(10,450,400,30);
 
-        numberOfDays = new JTextField();
+        numberOfDays = new JTextField("10");
         numberOfDays.setBounds(10,510,400,30);;
 
         frame.add(label1);
@@ -144,7 +143,7 @@ public class LaunchPage implements ActionListener {
             worldParameters.setNumberOfDays(convert(numberOfDays.getText()));
 
             frame.dispose();
-            SimulationWindow simulationWindow = new SimulationWindow();
+            new SimulationWindow(worldParameters);
         }
     }
 
@@ -156,7 +155,7 @@ public class LaunchPage implements ActionListener {
         catch (NumberFormatException nfe){
             System.out.println("NumberFormatException: "+nfe.getMessage());
         }
-        return -1;
+        return -1; //TODO to nie do końca może tak być
     }
 
 }

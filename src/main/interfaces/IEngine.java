@@ -18,4 +18,5 @@ public interface IEngine {
     //void run();
     void runDays(int numberOfDays, int energyFromGrass);
     void addAnimal(Animal animal);
+    void nextDay();
 }

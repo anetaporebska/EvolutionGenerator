@@ -1,7 +1,6 @@
 package main.maps;
 
-import main.Randomizer;
-import main.World;
+import main.*;
 import main.elements.Animal;
 import main.elements.Grass;
 import main.enums.AnimalOrientation;
@@ -11,9 +10,9 @@ import main.interfaces.IWorldMap;
 import main.math.Vector2d;
 import main.utilities.MapVisualizer;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 // TODO WorldMap jako klasa nadrzędna z której dziedziczy jakaś klasa, żeby nie było za dużo
@@ -42,6 +41,13 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     // observer
     private IEngine engine;
 
+    // observer
+    private MapPanel mapPanel;
+
+    private AnimationColours animationColours = new AnimationColours();
+
+    WorldParameters worldParameters;
+
 
     public WorldMap(Vector2d worldMapLowerLeft, Vector2d worldMapUpperRight, Vector2d jungleLowerLeft, Vector2d jungleUpperRight){
         this.worldMapLowerLeft = worldMapLowerLeft;
@@ -52,6 +58,23 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     public WorldMap(int mapWidth, int mapHeight, int jungleWidth, int jungleHeight){
         this.worldMapLowerLeft = new Vector2d(0,0);
+        this.worldMapUpperRight = new Vector2d(mapWidth-1, mapHeight-1);
+        int x = (mapWidth - jungleWidth)/2;
+        int y = (mapHeight - jungleHeight)/2;
+
+        this.jungleLowerLeft = new Vector2d(x,y);
+        this.jungleUpperRight = new Vector2d(x+jungleWidth, y+jungleHeight);
+    }
+
+    public WorldMap(WorldParameters worldParameters){
+        this.worldParameters = worldParameters;
+        this.worldMapLowerLeft = new Vector2d(0,0);
+
+        int mapWidth = worldParameters.getWorldWidth();
+        int mapHeight = worldParameters.getWorldHeight();
+        int jungleWidth = worldParameters.getJungleWidth();
+        int jungleHeight = worldParameters.getJungleHeight();
+
         this.worldMapUpperRight = new Vector2d(mapWidth-1, mapHeight-1);
         int x = (mapWidth - jungleWidth)/2;
         int y = (mapHeight - jungleHeight)/2;
@@ -97,6 +120,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
         animal.addObserver(this);
         engine.addAnimal(animal);
+        notifyMapPanel(position);
     }
 
 
@@ -104,6 +128,26 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     // w jednym miejscu może być jedna trawa, trawa nie może się pojawić gdzieś gdzie już coś jest (zwierzę lub trawa)
     // metoda do dodawania trawy po każdym dniu
     public void addGrass(){
+        // najpierw w dżungli
+        Vector2d newPosition = randomizer.randomizeElementPosition(jungleLowerLeft, jungleUpperRight);
+        while (isOccupied(newPosition)){
+            newPosition = randomizer.randomizeElementPosition(jungleLowerLeft,jungleUpperRight);
+        }
+        grass.put(newPosition, new Grass(this, newPosition));
+        notifyMapPanel(newPosition);
+
+        // na sawannie
+        newPosition = randomizer.randomizeElementPosition(worldMapLowerLeft, worldMapUpperRight);
+        while (isOccupied(newPosition) && !outsideJungle(newPosition)){
+            newPosition = randomizer.randomizeElementPosition(worldMapLowerLeft, worldMapUpperRight);
+        }
+        grass.put(newPosition, new Grass(this, newPosition));
+        notifyMapPanel(newPosition);
+
+
+    }
+
+    public void addInitialGrass(){
         // najpierw w dżungli
         Vector2d newPosition = randomizer.randomizeElementPosition(jungleLowerLeft, jungleUpperRight);
         while (isOccupied(newPosition)){
@@ -120,6 +164,9 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
 
     }
+
+
+
     // jak wylosuję pozycję dla trawy na sawannie
     private boolean outsideJungle(Vector2d position){
         return !(position.x <= jungleUpperRight.x && position.x >= jungleLowerLeft.x && position.y <= jungleUpperRight.y && position.y >= jungleLowerLeft.y);
@@ -159,6 +206,8 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         else {
             animals.get(newPosition).add(animal);
         }
+        notifyMapPanel(oldPosition);
+        notifyMapPanel(newPosition);
 
     }
 
@@ -244,6 +293,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         }
         for (Vector2d grassPosition : grassToBeRemoved){
             grass.remove(grassPosition);
+            notifyMapPanel(grassPosition);
         }
 
 
@@ -252,7 +302,9 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     public void removeAnimal(Animal animal){
 
         ArrayList<Animal> arrayList = animals.get(animal.getPosition());
+        Vector2d position = animal.getPosition();
         arrayList.remove(animal);
+        notifyMapPanel(position);
 
 
     }
@@ -262,6 +314,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     }
 
     //Map<Vector2d, ArrayList<Animal>> animals = new LinkedHashMap<>();
+    // TODO mogą się rozmnażać tylko jak manją 50% energii początkowej
     public void reproductionOfAnimals(){
         ArrayList<Animal> animalsToAdd = new ArrayList<>();
         for (Vector2d vector2d : animals.keySet()){
@@ -288,6 +341,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
         for(Animal animal: animalsToAdd){
             addAnimal(animal);
+            notifyMapPanel(animal.getPosition());
         }
 
 
@@ -379,6 +433,52 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     public void addObserver(IEngine engine){
         this.engine = engine;
+    }
+
+    public void addObserver(MapPanel mapPanel){
+        this.mapPanel = mapPanel;
+    }
+
+
+    public Color colorOnPosition(Vector2d position){
+        Object object = objectAt(position);
+        if (object instanceof Animal){
+            Animal animal = findTheStrongest(10000, animals.get(position));
+            if(animal.getAnimalEnergy()<=0){
+                return animationColours.deadAnimal;
+            }
+
+            return animationColours.getAnimalColor(worldParameters.getInitialEnergy(), animal.getAnimalEnergy());
+
+        }
+        else if (object instanceof Grass){
+            return animationColours.grassColor;
+        }
+        else{
+            if (insideJungle(position)){
+                return animationColours.jungleColor;
+            }
+
+        }
+        return animationColours.savannaColor;
+
+
+    }
+
+    private boolean insideJungle(Vector2d position){
+        return (position.x <= jungleUpperRight.x && position.x >= jungleLowerLeft.x && position.y <= jungleUpperRight.y && position.y >= jungleLowerLeft.y);
+    }
+
+    public int getWorldWidth(){
+        return worldParameters.getWorldWidth();
+    }
+
+    public int getWorldHeight(){
+        return worldParameters.getWorldHeight();
+    }
+
+    public void notifyMapPanel(Vector2d position){
+        this.mapPanel.changeElements(position);
     }
 
 

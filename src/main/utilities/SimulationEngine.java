@@ -1,5 +1,6 @@
 package main.utilities;
 
+import main.WorldParameters;
 import main.math.Statistics;
 import main.elements.Animal;
 import main.interfaces.IEngine;
@@ -13,6 +14,7 @@ public class SimulationEngine implements IEngine {
     private IWorldMap map;
     private List<Animal> animals = new ArrayList<>();
     private Statistics statistics = new Statistics();
+    private WorldParameters worldParameters;
 
     public SimulationEngine(IWorldMap map, int initialNoAnimals, int initialEnergy, int initialNoGrass ){
         this.map = map;
@@ -22,16 +24,34 @@ public class SimulationEngine implements IEngine {
         }
         int n = initialNoGrass/2;
         for(int i=0; i<n; i+=1){
-            map.addGrass();
+            map.addInitialGrass();
         }
 
     }
+
+    public SimulationEngine(IWorldMap map, WorldParameters worldParameters){
+        this.map = map;
+        this.map.addObserver(this);
+        this.worldParameters = worldParameters;
+        for(int i=0; i< worldParameters.getInitialNoAnimals(); i+=1){
+            animals.add(map.placeAnimal(worldParameters.getInitialEnergy()));
+        }
+        int n = worldParameters.getInitialNoGrass()/2;
+        for(int i=0; i<n; i+=1){
+            map.addInitialGrass();
+        }
+
+    }
+
 
     public void addAnimal(Animal animal){
         animals.add(animal);
     }
 
-    public void nextDay(int energyFromGrass){
+    public void nextDay(){
+        int energyFromGrass = worldParameters.getEnergyFromGrass();
+        removeDeadAnimals();
+
         // moveAnimals + updateEnergy
         map.updateAnimalOrientations();
         moveAnimals();
@@ -39,7 +59,7 @@ public class SimulationEngine implements IEngine {
 
         // eatGrass + updateEnergy
 
-        removeDeadAnimals();
+
         int numberOfAnimals = statistics.getNumberOfAnimals(animals);
 
         System.out.println("Liczba zwierząt: " + Integer.toString(numberOfAnimals));
@@ -60,8 +80,9 @@ public class SimulationEngine implements IEngine {
 
     private void moveAnimals(){
         for (Animal animal: animals){
-            animal.moveForward();
             animal.useEnergy(1);
+            animal.moveForward();
+
         }
 
     }
@@ -69,7 +90,7 @@ public class SimulationEngine implements IEngine {
 
     public void runDays(int numberOfDays, int energyFromGrass){
         for(int i=0; i<numberOfDays; i+=1){
-            nextDay(energyFromGrass);
+            nextDay();
             System.out.println(map.toString());
         }
     }

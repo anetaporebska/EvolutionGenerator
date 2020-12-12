@@ -33,6 +33,13 @@ public interface IWorldMap {
 
     void addObserver(IEngine engine);
 
+    int getWorldWidth();
+    int getWorldHeight();
+
+    void notifyMapPanel(Vector2d position);
+
+    void addInitialGrass();
+
 
 
 
