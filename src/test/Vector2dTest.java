@@ -1,4 +1,3 @@
-import main.enums.MapDirection;
 import main.math.Vector2d;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,14 +26,6 @@ public class Vector2dTest {
     Vector2d v_2_0 = new Vector2d(2,0);
 
 
-
-    @Test
-    public void testEquals(){
-        MapDirection N = MapDirection.NORTH;
-        assertEquals(false, v_1_2.equals(N));
-        assertEquals(true,v_1_2.equals(v_1_2));
-        assertEquals(false,v_1_2.equals(v_1_3));
-    }
 
     @Test
     public void testToString(){

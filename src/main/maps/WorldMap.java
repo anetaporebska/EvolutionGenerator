@@ -5,6 +5,7 @@ import main.World;
 import main.elements.Animal;
 import main.elements.Grass;
 import main.enums.AnimalOrientation;
+import main.interfaces.IEngine;
 import main.interfaces.IPositionChangeObserver;
 import main.interfaces.IWorldMap;
 import main.math.Vector2d;
@@ -15,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
+// TODO WorldMap jako klasa nadrzędna z której dziedziczy jakaś klasa, żeby nie było za dużo
 
 public class WorldMap implements IWorldMap, IPositionChangeObserver {
     // TODO dodać resztę metod do IWorldMap
@@ -37,6 +38,10 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     protected Map<Vector2d, ArrayList<Animal>> animals = new LinkedHashMap<>();
 
     private Randomizer randomizer = new Randomizer();
+
+    // observer
+    private IEngine engine;
+
 
     public WorldMap(Vector2d worldMapLowerLeft, Vector2d worldMapUpperRight, Vector2d jungleLowerLeft, Vector2d jungleUpperRight){
         this.worldMapLowerLeft = worldMapLowerLeft;
@@ -75,6 +80,26 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         return animal;
 
     }
+
+    private void addAnimal(Animal animal){
+        Vector2d position = animal.getPosition();
+        if (animals.get(position) == null) {
+            ArrayList<Animal> arrayList = new ArrayList<>();
+            arrayList.add(animal);
+            animals.put(position, arrayList);
+        }
+        else{
+            ArrayList<Animal> arrayList = animals.get(position);
+            arrayList.add(animal);
+            animals.put(position, arrayList);
+
+        }
+
+        animal.addObserver(this);
+        engine.addAnimal(animal);
+    }
+
+
     // każdego dnia dodajemy 2 trawy, jedna w dżungli, druga na sawannie
     // w jednym miejscu może być jedna trawa, trawa nie może się pojawić gdzieś gdzie już coś jest (zwierzę lub trawa)
     // metoda do dodawania trawy po każdym dniu
@@ -238,21 +263,34 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     //Map<Vector2d, ArrayList<Animal>> animals = new LinkedHashMap<>();
     public void reproductionOfAnimals(){
-
+        ArrayList<Animal> animalsToAdd = new ArrayList<>();
         for (Vector2d vector2d : animals.keySet()){
 
             ArrayList<Animal> animalsOnPosition = animals.get(vector2d);
             if (animalsOnPosition.toArray().length==2){
                 Animal animalChild = mixAnimals(animalsOnPosition.get(0), animalsOnPosition.get(1), vector2d);
+                animalsToAdd.add(animalChild);
 
             }
+            //TODO jeśli dwa najsilniejsze mają taką samą energię to trzeba to jeszcze obsłużyć
             else if (animalsOnPosition.toArray().length>2){
-                // TODO find 2 strongest ones
+                Animal animal1 = findTheStrongest(100000, animalsOnPosition);
+                Animal animal2 = findTheStrongest(animal1.getAnimalEnergy(), animalsOnPosition);
+
+                Animal animalChild = mixAnimals(animal1,animal2, vector2d);
+                animalsToAdd.add(animalChild);
 
 
             }
+
 
         }
+
+        for(Animal animal: animalsToAdd){
+            addAnimal(animal);
+        }
+
+
 
     }
 
@@ -337,6 +375,10 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
         return child;
 
+    }
+
+    public void addObserver(IEngine engine){
+        this.engine = engine;
     }
 
 

@@ -1,11 +1,8 @@
 package main.utilities;
 
 import main.math.Statistics;
-import main.math.Vector2d;
 import main.elements.Animal;
-import main.enums.MoveDirection;
 import main.interfaces.IEngine;
-import main.interfaces.IPositionChangeObserver;
 import main.interfaces.IWorldMap;
 
 import java.util.ArrayList;
@@ -19,6 +16,7 @@ public class SimulationEngine implements IEngine {
 
     public SimulationEngine(IWorldMap map, int initialNoAnimals, int initialEnergy, int initialNoGrass ){
         this.map = map;
+        this.map.addObserver(this);
         for(int i=0; i<initialNoAnimals; i+=1){
             animals.add(map.placeAnimal(initialEnergy));
         }
@@ -27,6 +25,10 @@ public class SimulationEngine implements IEngine {
             map.addGrass();
         }
 
+    }
+
+    public void addAnimal(Animal animal){
+        animals.add(animal);
     }
 
     public void nextDay(int energyFromGrass){
@@ -47,9 +49,11 @@ public class SimulationEngine implements IEngine {
 
         // reproductionOfAnimals
 
-
+        map.reproductionOfAnimals();
 
         map.addGrass();
+
+        // TODO actualize visualization
 
 
     }
@@ -89,9 +93,6 @@ public class SimulationEngine implements IEngine {
     }
 
 
-
-
-    // tutaj mogę mieć next day
 
 }
 

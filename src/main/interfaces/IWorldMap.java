@@ -29,6 +29,10 @@ public interface IWorldMap {
     void removeAnimal(Animal animal);
     int getNumberOfGrass();
 
+    void reproductionOfAnimals();
+
+    void addObserver(IEngine engine);
+
 
 
 
