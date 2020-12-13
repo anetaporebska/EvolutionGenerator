@@ -1,4 +1,4 @@
-package main;
+package main.visualization;
 
 // wyświetlanie aktualnej mapy ?
 
@@ -46,7 +46,7 @@ public class MapPanel extends JPanel {
 
 
     }
-    // musimy się dostać to
+
     private void initializeLabels(){
 
         for (int i=0; i< worldHeight; i++){

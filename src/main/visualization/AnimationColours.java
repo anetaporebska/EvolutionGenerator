@@ -1,4 +1,4 @@
-package main;
+package main.visualization;
 
 import java.awt.*;
 

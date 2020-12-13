@@ -1,7 +1,7 @@
 package main;
 
 
-
+import main.visualization.LaunchPage;
 
 public class World {
 
@@ -25,25 +25,7 @@ public class World {
 // TODO Testy
 // TODO Dwie mapy
 // TODO Zatrzymywanie animacji
-// TODO Interfejs podawania parametrów przez urzytkownika
 
 
 //TODO efektywna struktura pozwalająca mi na przechowywanie informacji o wszystkich zwierzątkach na danej pozycji
 
-
-// TODO klasa Genome
-// każdy Animal ma Genome
-
-/*
- int initialEnergy = 10;
-    int initialNoAnimals = 20;
-    int initialNoGrass = 10; // zawsze parzystą poproszę
-    int jungleWidth = 5;
-    int jungleHeight = 5;
-    int worldWidth = 15;
-    int worldHeight = 15;
-    int energyFromGrass = 3;
-    int numberOfDays = 10;
-
-
- */

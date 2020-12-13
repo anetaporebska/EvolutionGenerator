@@ -1,5 +1,7 @@
-package main;
+package main.visualization;
 
+import main.World;
+import main.maps.WorldParameters;
 import main.interfaces.IEngine;
 import main.maps.WorldMap;
 import main.utilities.SimulationEngine;
@@ -16,40 +18,45 @@ public class SimulationWindow implements ActionListener {
     // tu będę potrzebować mapę wizualizacji -> animacje ; JPanel()
     // może GridLayout ??
 
-    WorldMap worldMap;
-    IEngine engine;
+    WorldMap worldMap1;
+    IEngine engine1;
+
+    WorldMap worldMap2;
+    IEngine engine2;
 
     // jeśli chcę wybrać dane zwierzę to może MouseListener -> > > > BroCode
 
     SimulationWindow( WorldParameters worldParameters){
 
-        worldMap = new WorldMap(worldParameters);
-        engine = new SimulationEngine(worldMap,worldParameters);
+        worldMap1 = new WorldMap(worldParameters);
+        engine1 = new SimulationEngine(worldMap1,worldParameters);
 
-        //label.setBounds(0,0,420,50);
+        worldMap2 = new WorldMap(worldParameters);
+        engine2 = new SimulationEngine(worldMap2,worldParameters);
 
-        //frame.add(label);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(420,420);
+        frame.setSize(1000,500);
 
 
-        MapPanel mapPanel = new MapPanel(worldMap);
-        mapPanel.setBounds(0,0,420,420);
-        frame.add(mapPanel);
+        MapPanel mapPanel1 = new MapPanel(worldMap1);
+        mapPanel1.setBounds(0,0,420,420);
+        frame.add(mapPanel1);
+
+        MapPanel mapPanel2 = new MapPanel(worldMap2);
+        mapPanel2.setBounds(450,0,420,420);
+        frame.add(mapPanel2);
 
 
         frame.setLayout(null);
         frame.setVisible(true);
 
         int n = worldParameters.getNumberOfDays();
-        // jakiś timer
+
         Timer timer = new Timer(1000, this);
 
         for (int i=0; i<n; i++){
-            // wyświetlenie aktualnej mapPanel
             timer.start();
         }
-        //timer.stop();
 
 
 
@@ -62,7 +69,8 @@ public class SimulationWindow implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        engine.nextDay();
+        engine1.nextDay();
+        engine2.nextDay();
         frame.repaint();
     }
 }

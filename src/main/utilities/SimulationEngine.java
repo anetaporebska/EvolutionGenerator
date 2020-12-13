@@ -1,6 +1,6 @@
 package main.utilities;
 
-import main.WorldParameters;
+import main.maps.WorldParameters;
 import main.math.Statistics;
 import main.elements.Animal;
 import main.interfaces.IEngine;
@@ -16,18 +16,6 @@ public class SimulationEngine implements IEngine {
     private Statistics statistics = new Statistics();
     private WorldParameters worldParameters;
 
-    public SimulationEngine(IWorldMap map, int initialNoAnimals, int initialEnergy, int initialNoGrass ){
-        this.map = map;
-        this.map.addObserver(this);
-        for(int i=0; i<initialNoAnimals; i+=1){
-            animals.add(map.placeAnimal(initialEnergy));
-        }
-        int n = initialNoGrass/2;
-        for(int i=0; i<n; i+=1){
-            map.addInitialGrass();
-        }
-
-    }
 
     public SimulationEngine(IWorldMap map, WorldParameters worldParameters){
         this.map = map;
@@ -73,7 +61,6 @@ public class SimulationEngine implements IEngine {
 
         map.addGrass();
 
-        // TODO actualize visualization
 
 
     }

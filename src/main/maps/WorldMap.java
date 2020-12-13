@@ -1,14 +1,17 @@
 package main.maps;
 
-import main.*;
 import main.elements.Animal;
+import main.elements.Genome;
 import main.elements.Grass;
 import main.enums.AnimalOrientation;
 import main.interfaces.IEngine;
 import main.interfaces.IPositionChangeObserver;
 import main.interfaces.IWorldMap;
+import main.math.Randomizer;
 import main.math.Vector2d;
 import main.utilities.MapVisualizer;
+import main.visualization.AnimationColours;
+import main.visualization.MapPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -48,23 +51,6 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     WorldParameters worldParameters;
 
-
-    public WorldMap(Vector2d worldMapLowerLeft, Vector2d worldMapUpperRight, Vector2d jungleLowerLeft, Vector2d jungleUpperRight){
-        this.worldMapLowerLeft = worldMapLowerLeft;
-        this.worldMapUpperRight = worldMapUpperRight;
-        this.jungleLowerLeft = jungleLowerLeft;
-        this.jungleUpperRight = jungleUpperRight;
-    }
-
-    public WorldMap(int mapWidth, int mapHeight, int jungleWidth, int jungleHeight){
-        this.worldMapLowerLeft = new Vector2d(0,0);
-        this.worldMapUpperRight = new Vector2d(mapWidth-1, mapHeight-1);
-        int x = (mapWidth - jungleWidth)/2;
-        int y = (mapHeight - jungleHeight)/2;
-
-        this.jungleLowerLeft = new Vector2d(x,y);
-        this.jungleUpperRight = new Vector2d(x+jungleWidth, y+jungleHeight);
-    }
 
     public WorldMap(WorldParameters worldParameters){
         this.worldParameters = worldParameters;
@@ -243,7 +229,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         for (Vector2d vector2d : animals.keySet()){
 
             for (Animal animal : animals.get(vector2d)){
-                int randomGene = randomizer.randomizeAnimalOrientation(animal, animal.genome);
+                int randomGene = randomizer.randomizeAnimalOrientation(animal, animal.getGenome().getGenes());
                 // taki jaki gen został wylosowany, tyle razy obracam zwierzę w prawo o 45 stopni
                 for (int i=0; i<randomGene; i++){
                     AnimalOrientation actualOrientation = animal.getOrientation();
@@ -268,7 +254,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
             if (animals.get(grassPosition) != null){
 
-                int maxEnergy = 0;
+                int maxEnergy = -1;
                 for (Animal animal : animals.get(grassPosition)){
                     if(animal.getAnimalEnergy()>maxEnergy){
                         maxEnergy = animal.getAnimalEnergy();
@@ -281,13 +267,13 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
                     }
                 }
                 int numberOfAnimals = animalsWithMaxEnergy.toArray().length;
-                int gainedEnergy = energyFromGrass/numberOfAnimals;
-                for (Animal animal : animalsWithMaxEnergy){
-                    animal.gainEnergy(gainedEnergy);
+                if (numberOfAnimals>0) {
+                    int gainedEnergy = energyFromGrass / numberOfAnimals;
+                    for (Animal animal : animalsWithMaxEnergy) {
+                        animal.gainEnergy(gainedEnergy);
+                    }
+                    grassToBeRemoved.add(grassPosition);
                 }
-
-                // muszę jeszcze usunąć tą trawę
-                grassToBeRemoved.add(grassPosition);
             }
 
         }
@@ -350,7 +336,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     private Animal findTheStrongest(int upperEnergyLimit, ArrayList<Animal> animals){
         Animal strongestAnimal = null;
-        int energy = 0;
+        int energy = -1;
         for(Animal animal: animals){
             int animalEnergy = animal.getAnimalEnergy();
             if(animalEnergy > energy && animalEnergy < upperEnergyLimit ){
@@ -370,24 +356,12 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
         // get new genome
 
-        int idx = randomizer.randomIndex();
-        int a = randomizer.randomParent();
-        int [] array1;
-        int [] array2;
-        if (a == 0 ){ // biorę pierwszą część genomu od animal1
-            array1 = animal1.getGenes(0,idx);
-            array2 = animal2.getGenes(idx,32);
-        }
-        else{
-            array1 = animal2.getGenes(0,idx);
-            array2 = animal1.getGenes(idx,32);
-        }
-        int len1 = array1.length;
-        int len2 = array2.length;
 
-        int [] result = new int[len1+len2];
-        System.arraycopy(array1,0,result,0,len1);
-        System.arraycopy(array2, 0, result, len1, len2);
+
+        Genome childGenome = Genome.mixGenomes(animal1.getGenome(), animal2.getGenome());
+
+
+
 
 
         // manage energy
@@ -419,11 +393,8 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         }
 
 
-        Animal child = new Animal(newPosition,energy1+energy2, this, result);
+        Animal child = new Animal(newPosition,energy1+energy2, this, childGenome);
 
-
-        // check whether child has all possible genes
-        child.checkGenes();
 
 
 

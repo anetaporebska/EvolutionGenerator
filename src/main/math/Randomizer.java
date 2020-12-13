@@ -1,4 +1,4 @@
-package main;
+package main.math;
 
 import main.elements.Animal;
 import main.elements.Grass;
