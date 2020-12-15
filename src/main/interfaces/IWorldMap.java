@@ -38,8 +38,6 @@ public interface IWorldMap {
 
     void notifyMapPanel(Vector2d position);
 
-    void addInitialGrass();
-
     void updateStatistics();
 
 

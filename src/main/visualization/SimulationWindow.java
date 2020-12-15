@@ -70,13 +70,9 @@ public class SimulationWindow implements ActionListener {
 
 
 
-        Timer timer = new Timer(50, this);
+        Timer timer = new Timer(10, this);
 
         timer.start();
-
-        if(i==n){
-            timer.stop();
-        }
 
 
         // nowy dzień -> nowy wygląd wszystkiego, ustawić jakiś timer i zaaktualizować MapPanel (mogę na przykład podać pozycję,
@@ -93,8 +89,9 @@ public class SimulationWindow implements ActionListener {
             Timer s = (Timer) actionEvent.getSource();
             s.stop();
         }
-
-        engine1.nextDay();
+        System.out.println("engine1");
+        engine1.nextDay(); // infinity!
+        System.out.println("engine2");
         engine2.nextDay();
         worldMap1.updateStatistics();
         worldMap2.updateStatistics();

@@ -23,7 +23,7 @@ public class SimulationEngine implements IEngine {
 
         int n = worldParameters.getInitialNoGrass()/2;
         for(int i=0; i<n; i+=1){
-            map.addInitialGrass();
+            map.addGrass();
         }
         for(int i=0; i< worldParameters.getInitialNoAnimals(); i+=1){
             animals.add(map.placeAnimal(worldParameters.getInitialEnergy()));
@@ -38,17 +38,24 @@ public class SimulationEngine implements IEngine {
 
     public void nextDay(){
         int energyFromGrass = worldParameters.getEnergyFromGrass();
+        System.out.println("remove dead");
         removeDeadAnimals();
 
         // moveAnimals + updateEnergy
+        System.out.println("update orientation");
         map.updateAnimalOrientations();
+
+        System.out.println("move animals");
         moveAnimals();
+
+        System.out.println("eat grass");
         map.eatGrass(energyFromGrass);
 
         // eatGrass + updateEnergy
-
+        System.out.println("reproduction");
         map.reproductionOfAnimals();
 
+        System.out.println("add grass");
         map.addGrass();
 
 

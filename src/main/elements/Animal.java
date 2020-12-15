@@ -17,8 +17,6 @@ public class Animal{
 
     private Genome genome;
     private int animalEnergy;
-
-    // TODO age of animal
     private int age = 0;
 
     private Randomizer randomizer = new Randomizer();

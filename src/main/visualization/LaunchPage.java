@@ -64,31 +64,31 @@ public class LaunchPage implements ActionListener {
 
 
 
-        initialEnergy = new JTextField("30");
+        initialEnergy = new JTextField("200");
         initialEnergy.setBounds(10,30,400,30);
 
-        initialNoAnimals = new JTextField("30");
+        initialNoAnimals = new JTextField("400");
         initialNoAnimals.setBounds(10,90,400,30);
 
-        initialNoGrass = new JTextField("100");
+        initialNoGrass = new JTextField("200");
         initialNoGrass.setBounds(10,150,400,30);
 
-        jungleWidth = new JTextField("20");
+        jungleWidth = new JTextField("40");
         jungleWidth.setBounds(10,210,400,30);
 
-        jungleHeight = new JTextField("20");
+        jungleHeight = new JTextField("40");
         jungleHeight.setBounds(10,270,400,30);
 
-        worldWidth = new JTextField("40");
+        worldWidth = new JTextField("100");
         worldWidth.setBounds(10,330,400,30);
 
-        worldHeight = new JTextField("40");
+        worldHeight = new JTextField("100");
         worldHeight.setBounds(10,390,400,30);
 
-        energyFromGrass = new JTextField("5");
+        energyFromGrass = new JTextField("50");
         energyFromGrass.setBounds(10,450,400,30);
 
-        numberOfDays = new JTextField("100");
+        numberOfDays = new JTextField("20000");
         numberOfDays.setBounds(10,510,400,30);;
 
         frame.add(label1);
