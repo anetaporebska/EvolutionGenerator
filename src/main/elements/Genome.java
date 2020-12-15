@@ -7,8 +7,9 @@ import java.util.Arrays;
 public class Genome {
 
     private final int numberOfGenes = 32;
-    // sorted array
 
+
+    // TODO genes - sorted array?
     private int [] genes;
     private int [] genesNumber;
 
@@ -119,10 +120,10 @@ public class Genome {
     }
 
 
+    public void displayGenome(){
+        Arrays.toString(this.genes);
+    }
 
-    // TODO displayGenome
-
-    //
 
     // jeśli brakuje jakiegoś genu
     public void fixGenome(){

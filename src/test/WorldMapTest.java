@@ -23,10 +23,7 @@ public class WorldMapTest {
         worldParameters.setEnergyFromGrass(4);
         worldParameters.setInitialNoGrass(10);
         worldParameters.setInitialEnergy(200);
-        WorldMap worldMap = new WorldMap(worldParameters);
-        SimulationEngine engine = new SimulationEngine(worldMap,worldParameters);
 
-        engine.nextDay();
 
     }
 

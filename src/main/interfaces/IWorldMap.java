@@ -40,6 +40,8 @@ public interface IWorldMap {
 
     void addInitialGrass();
 
+    void updateStatistics();
+
 
 
 

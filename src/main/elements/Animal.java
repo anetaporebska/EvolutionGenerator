@@ -5,22 +5,23 @@ import main.enums.AnimalOrientation;
 import main.math.Vector2d;
 import main.interfaces.IPositionChangeObserver;
 import main.interfaces.IWorldMap;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
 
 public class Animal{
     private AnimalOrientation orientation;
     private List<IPositionChangeObserver> observers = new ArrayList<>();
     private Vector2d position;
-    protected IWorldMap map;
+    private IWorldMap map;
 
-    Genome genome;
-
+    private Genome genome;
     private int animalEnergy;
 
-    Randomizer randomizer = new Randomizer();
+    // TODO age of animal
+    private int age = 0;
+
+    private Randomizer randomizer = new Randomizer();
 
     public Animal(Vector2d position, int initialEnergy, IWorldMap map){
         this.map = map;
@@ -50,6 +51,14 @@ public class Animal{
 
     public Genome getGenome(){ return this.genome;}
 
+    public int getAge(){
+        return this.age;
+    }
+
+    public void changeAge(){
+        this.age+=1;
+    }
+
     public void changeAnimalOrientation(AnimalOrientation newOrientation){
         this.orientation = newOrientation;
     }
@@ -77,15 +86,6 @@ public class Animal{
     public boolean checkIfDead(){
         return animalEnergy<=0;
     }
-
-    public void move(Vector2d vector){
-        Vector2d newPosition = this.position.add(vector);
-        if (map.canMoveTo(newPosition)){
-            notifyObservers(this.position, newPosition);
-            this.position = newPosition;
-        }
-    }
-
 
     public void addObserver(IPositionChangeObserver observer){
         observers.add(observer);

@@ -4,6 +4,7 @@ import main.World;
 import main.maps.WorldParameters;
 import main.interfaces.IEngine;
 import main.maps.WorldMap;
+import main.math.Statistics;
 import main.utilities.SimulationEngine;
 
 import javax.swing.*;
@@ -13,10 +14,6 @@ import java.awt.event.ActionListener;
 public class SimulationWindow implements ActionListener {
 
     JFrame frame = new JFrame();
-    //JLabel label  = new JLabel("Hello!");
-
-    // tu będę potrzebować mapę wizualizacji -> animacje ; JPanel()
-    // może GridLayout ??
 
     WorldMap worldMap1;
     IEngine engine1;
@@ -24,19 +21,32 @@ public class SimulationWindow implements ActionListener {
     WorldMap worldMap2;
     IEngine engine2;
 
+    Statistics statistics1 = new Statistics();
+    Statistics statistics2 = new Statistics();
+
+    StatisticsPanel statisticsPanel1;
+    StatisticsPanel statisticsPanel2;
+
+
     // jeśli chcę wybrać dane zwierzę to może MouseListener -> > > > BroCode
+
+    int n;
+    int i =1;
 
     SimulationWindow( WorldParameters worldParameters){
 
-        worldMap1 = new WorldMap(worldParameters);
+        worldMap1 = new WorldMap(worldParameters, statistics1);
         engine1 = new SimulationEngine(worldMap1,worldParameters);
+        worldMap1.updateStatistics();
 
-        worldMap2 = new WorldMap(worldParameters);
+        worldMap2 = new WorldMap(worldParameters, statistics2);
         engine2 = new SimulationEngine(worldMap2,worldParameters);
+        worldMap2.updateStatistics();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000,500);
+        frame.setSize(1000,1000);
 
+        n = worldParameters.getNumberOfDays();
 
         MapPanel mapPanel1 = new MapPanel(worldMap1);
         mapPanel1.setBounds(0,0,420,420);
@@ -46,19 +56,27 @@ public class SimulationWindow implements ActionListener {
         mapPanel2.setBounds(450,0,420,420);
         frame.add(mapPanel2);
 
+        statisticsPanel1 = new StatisticsPanel(statistics1);
+        statisticsPanel1.setBounds(0, 500, 420,420);
+        frame.add(statisticsPanel1);
+
+        statisticsPanel2 = new StatisticsPanel(statistics2);
+        statisticsPanel2.setBounds(450, 500, 420, 420);
+        frame.add(statisticsPanel2);
+
 
         frame.setLayout(null);
         frame.setVisible(true);
 
-        int n = worldParameters.getNumberOfDays();
 
-        Timer timer = new Timer(1000, this);
 
-        for (int i=0; i<n; i++){
-            timer.start();
+        Timer timer = new Timer(50, this);
+
+        timer.start();
+
+        if(i==n){
+            timer.stop();
         }
-
-
 
 
         // nowy dzień -> nowy wygląd wszystkiego, ustawić jakiś timer i zaaktualizować MapPanel (mogę na przykład podać pozycję,
@@ -69,8 +87,23 @@ public class SimulationWindow implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        System.out.println(i);
+        i+=1;
+        if (i==n+1){
+            Timer s = (Timer) actionEvent.getSource();
+            s.stop();
+        }
+
         engine1.nextDay();
         engine2.nextDay();
+        worldMap1.updateStatistics();
+        worldMap2.updateStatistics();
+        statisticsPanel1.updateLabels();
+        statisticsPanel2.updateLabels();
+
+
+
         frame.repaint();
+
     }
 }

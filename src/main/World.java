@@ -25,6 +25,7 @@ public class World {
 // TODO Testy
 // TODO Dwie mapy
 // TODO Zatrzymywanie animacji
+// TODO Wczytywanie z pliku
 
 
 //TODO efektywna struktura pozwalająca mi na przechowywanie informacji o wszystkich zwierzątkach na danej pozycji

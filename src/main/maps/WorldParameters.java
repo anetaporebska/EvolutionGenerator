@@ -4,7 +4,7 @@ public class WorldParameters {
 
     private int initialEnergy ;
     private int initialNoAnimals;
-    private int initialNoGrass; // zawsze parzystą poproszę
+    private int initialNoGrass;
     private int jungleWidth;
     private int jungleHeight;
     private int worldWidth;

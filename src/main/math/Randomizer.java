@@ -1,10 +1,7 @@
 package main.math;
 
 import main.elements.Animal;
-import main.elements.Grass;
-import main.elements.MapElement;
 import main.enums.AnimalOrientation;
-import main.math.Vector2d;
 
 import java.util.Random;
 
