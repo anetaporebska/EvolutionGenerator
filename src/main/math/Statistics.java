@@ -16,9 +16,8 @@ public class Statistics {
     private int day=-1;
     private int [] dominantGenome;
 
-    // jak wyszukiwać dominujący genotyp? - tablice z genami w porządku leksykograficznym?
-
-    //TODO dominujące genotypy
+    private FamilyTree familyTree = new FamilyTree();
+    private int averageNumberOfChildren;
 
     // TODO średnia liczba dzieci dla żyjących zwierząt - drzewo jakieś trzeba ogarnąć
 
@@ -140,6 +139,32 @@ public class Statistics {
         }
 
     }
+
+    public void initializeFamilyTree(Map<Vector2d, ArrayList<Animal>> animals){
+        familyTree.addAncestors(animals);
+    }
+
+    public void addChild(Animal parent1, Animal parent2, Animal child){
+        familyTree.addChild(parent1,parent2,child);
+    }
+
+    public void setAverageNumberOfChildren(Map<Vector2d, ArrayList<Animal>> animals){
+
+        int numberOfChildren = 0;
+
+        for (Vector2d vector2d : animals.keySet()){
+            for (Animal animal: animals.get(vector2d)){
+                numberOfChildren+= familyTree.getNumberOfChildren(animal);
+            }
+        }
+
+        this.averageNumberOfChildren = numberOfChildren/numberOfAnimals;
+    }
+
+    public int getAverageNumberOfChildren(){
+        return averageNumberOfChildren;
+    }
+
 
 
 

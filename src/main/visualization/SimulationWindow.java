@@ -44,39 +44,34 @@ public class SimulationWindow implements ActionListener {
         worldMap2.updateStatistics();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000,1000);
+        frame.setSize(1010,1000);
 
         n = worldParameters.getNumberOfDays();
 
         MapPanel mapPanel1 = new MapPanel(worldMap1);
-        mapPanel1.setBounds(0,0,420,420);
+        mapPanel1.setBounds(0,0,500,500);
         frame.add(mapPanel1);
 
         MapPanel mapPanel2 = new MapPanel(worldMap2);
-        mapPanel2.setBounds(450,0,420,420);
+        mapPanel2.setBounds(510,0,500,500);
         frame.add(mapPanel2);
 
         statisticsPanel1 = new StatisticsPanel(statistics1);
-        statisticsPanel1.setBounds(0, 500, 420,420);
+        statisticsPanel1.setBounds(0, 500, 500,200);
         frame.add(statisticsPanel1);
 
         statisticsPanel2 = new StatisticsPanel(statistics2);
-        statisticsPanel2.setBounds(450, 500, 420, 420);
+        statisticsPanel2.setBounds(510, 500, 500, 200);
         frame.add(statisticsPanel2);
 
 
         frame.setLayout(null);
         frame.setVisible(true);
 
-
-
         Timer timer = new Timer(10, this);
 
         timer.start();
 
-
-        // nowy dzień -> nowy wygląd wszystkiego, ustawić jakiś timer i zaaktualizować MapPanel (mogę na przykład podać pozycję,
-        // na której się coś zmieniło i zmienić zawartość MapPanel dla tego elementu)
 
 
     }

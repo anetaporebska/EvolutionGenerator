@@ -22,7 +22,7 @@ public class StatisticsPanel extends JPanel {
 
     StatisticsPanel(Statistics statistics){
         this.statistics = statistics;
-        this.setLayout(new GridLayout(7,1));
+        this.setLayout(new GridLayout(7,1, 0,0));
 
         updateLabels();
         this.add(dayNumber);
@@ -46,7 +46,7 @@ public class StatisticsPanel extends JPanel {
         dominantGenome.setText("Dominant genome: " + statistics.getDominantGenome());
         averageEnergy.setText("Average energy for living animals: "+statistics.getAverageEnergy());
         averageAge.setText("Average age for dead animals: "+statistics.getAverageAge());
-        averageNumberOfChildren.setText("Average number of children: ");
+        averageNumberOfChildren.setText("Average number of children: "+statistics.getAverageNumberOfChildren());
 
 
     }
@@ -55,14 +55,3 @@ public class StatisticsPanel extends JPanel {
 
 
 }
-
-/*
-dayNumber = new JLabel("Day: " + statistics.getDay());
-        numberOfAnimals = new JLabel("Current number of animals: "+statistics.getNumberOfAnimals());
-        numberOfGrass = new JLabel("Current number of grass: "+statistics.getNumberOfGrass());
-        dominantGenome = new JLabel("Dominant genome: ");
-        averageEnergy = new JLabel("Average energy for living animals: "+statistics.getAverageEnergy());
-        averageAge = new JLabel("Average age for dead animals: "+statistics.getAverageAge());
-        averageNumberOfChildren = new JLabel("Average number of children: ");
-
- */

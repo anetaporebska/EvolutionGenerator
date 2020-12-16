@@ -34,7 +34,7 @@ public enum AnimalOrientation {
         }
         return null;
     }
-    // taka jaka jest liczba wylosowana, tyle razy przechodzę o 45 stopni
+
     public AnimalOrientation next(){
         switch (this){
             case NORTH: return NORTHEAST;

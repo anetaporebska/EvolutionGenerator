@@ -1,11 +1,9 @@
 package main.utilities;
 
 import main.maps.WorldParameters;
-import main.math.Statistics;
 import main.elements.Animal;
 import main.interfaces.IEngine;
 import main.interfaces.IWorldMap;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +26,7 @@ public class SimulationEngine implements IEngine {
         for(int i=0; i< worldParameters.getInitialNoAnimals(); i+=1){
             animals.add(map.placeAnimal(worldParameters.getInitialEnergy()));
         }
+        this.map.initializeStatisticsTree();
 
     }
 
@@ -38,28 +37,12 @@ public class SimulationEngine implements IEngine {
 
     public void nextDay(){
         int energyFromGrass = worldParameters.getEnergyFromGrass();
-        System.out.println("remove dead");
         removeDeadAnimals();
-
-        // moveAnimals + updateEnergy
-        System.out.println("update orientation");
         map.updateAnimalOrientations();
-
-        System.out.println("move animals");
         moveAnimals();
-
-        System.out.println("eat grass");
         map.eatGrass(energyFromGrass);
-
-        // eatGrass + updateEnergy
-        System.out.println("reproduction");
         map.reproductionOfAnimals();
-
-        System.out.println("add grass");
         map.addGrass();
-
-
-
     }
 
     private void moveAnimals(){
@@ -82,7 +65,6 @@ public class SimulationEngine implements IEngine {
 
 
     public void removeDeadAnimals(){
-        // przejrzeć wszystkie zwierzęta i sprawdzić czy nie trzeba usunąć jakiegoś które jest martwe
         List<Animal> animalsToDelete = new ArrayList<>();
         for(Animal animal: animals){
             if (animal.checkIfDead()){

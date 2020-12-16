@@ -40,6 +40,8 @@ public interface IWorldMap {
 
     void updateStatistics();
 
+    void initializeStatisticsTree();
+
 
 
 

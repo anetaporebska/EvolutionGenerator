@@ -1,13 +1,7 @@
 package main.elements;
 
-
-import main.enums.AnimalOrientation;
-import main.interfaces.IPositionChangeObserver;
 import main.math.Vector2d;
 import main.interfaces.IWorldMap;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Grass {
 
@@ -22,7 +16,6 @@ public class Grass {
     public String toString(){
         return "*";
     }
-
 
     public Vector2d getPosition(){return this.position;}
 
