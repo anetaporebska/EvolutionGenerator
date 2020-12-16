@@ -13,17 +13,21 @@ import main.math.Vector2d;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class MapPanel extends JPanel {
+public class MapPanel extends JPanel implements MouseListener {
 
     int worldWidth;
     int worldHeight;
 
     WorldMap worldMap;
 
+    AnimationColours animationColours = new AnimationColours();
 
-    // potrzebuję rozmiar każdej komórki jeszcze np 2 piksele
 
     // może 2d array of labels -> może być w sumie 1d
     // arrayList, bo chcę mieć zachowaną kolejność
@@ -76,6 +80,67 @@ public class MapPanel extends JPanel {
 
     }
 
+    // jak dodaję mouse listener to muszę jessze gdzieś powiedzieć co chcę żeby się działo -> mam 2 opcje
+    public void addMouseListeners(){
+
+        for (JLabel jLabel : labels){
+            jLabel.addMouseListener(this);
+        }
+
+    }
+
+    public void deleteMouseListeners(){
+        for (JLabel jLabel : labels){
+            jLabel.removeMouseListener(this);
+        }
+    }
 
 
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+        System.out.println("Clicked on "+ mouseEvent.getSource().toString());
+        JLabel labelClicked = (JLabel) mouseEvent.getSource();
+
+        // znajdź mi tera tego labela
+        for (int i=0; i< worldHeight; i++){
+            for (int j=0; j < worldWidth; j++){
+                int idx = getIndex(i,j);
+                if (labels.get(idx).equals(labelClicked)){
+                    // wyświetl mi tu zwierzę co to go kliknięto
+                    System.out.println("współrzędne");
+                    System.out.println(i);
+                    System.out.println(j);
+                    String genome =worldMap.displayAnimalGenome(new Vector2d(i,j));
+                    new GenomeFrame(genome,i,j);
+                }
+            }
+        }
+
+
+       deleteMouseListeners();
+
+
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+
+    }
 }

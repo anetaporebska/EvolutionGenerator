@@ -120,8 +120,8 @@ public class Genome {
     }
 
 
-    public void displayGenome(){
-        Arrays.toString(this.genes);
+    public String displayGenome(){
+        return Arrays.toString(this.genes);
     }
 
 

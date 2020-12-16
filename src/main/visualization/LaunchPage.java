@@ -1,6 +1,7 @@
 package main.visualization;
 
 import main.maps.WorldParameters;
+import main.utilities.SimulationEngine;
 import main.visualization.SimulationWindow;
 
 import javax.swing.*;
@@ -146,7 +147,11 @@ public class LaunchPage implements ActionListener {
             worldParameters.setNumberOfDays(convert(numberOfDays.getText()));
 
             frame.dispose();
-            new SimulationWindow(worldParameters);
+
+
+            new Thread (new SimulationWindow(worldParameters)).start();
+            new Thread (new SimulationWindow(worldParameters)).start();
+
         }
     }
 

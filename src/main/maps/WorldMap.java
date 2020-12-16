@@ -247,15 +247,12 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         ArrayList<Animal> animalsToAdd = new ArrayList<>();
         int requiredEnergy = worldParameters.getInitialEnergy()/2;
         for (Vector2d vector2d : animals.keySet()){
-            System.out.println(vector2d.toString());
             ArrayList<Animal> animalsOnPosition = animals.get(vector2d);
-            System.out.println(animalsOnPosition.size());
             if (animalsOnPosition.toArray().length==2){
                 Animal animal1 = animalsOnPosition.get(0);
                 Animal animal2 = animalsOnPosition.get(1);
                 if(animal1.getAnimalEnergy()>requiredEnergy && animal2.getAnimalEnergy()>requiredEnergy ) {
                     Animal animalChild = mixAnimals(animal1, animal2, vector2d);
-                    System.out.println(animalChild.getPosition().toString());
                     animalsToAdd.add(animalChild);
                 }
 
@@ -384,6 +381,17 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     public void initializeStatisticsTree(){
         statistics.initializeFamilyTree(animals);
+    }
+
+    public String displayAnimalGenome(Vector2d position){
+        if (animals.get(position).size()==1){
+            return animals.get(position).get(0).getGenome().displayGenome();
+        }
+        else if(animals.get(position).size()>1){
+            Animal animal = findTheStrongest(10000, animals.get(position));
+            return animal.getGenome().displayGenome();
+        }
+        return "There is no animal";
     }
 
 }
