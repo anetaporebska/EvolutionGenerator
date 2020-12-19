@@ -15,6 +15,7 @@ import main.visualization.MapPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,6 +39,8 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     private MapPanel mapPanel;
     private WorldParameters worldParameters;
     private Statistics statistics;
+
+    private Animal followedAnimal;
 
 
     public WorldMap(int mapWidth, int mapHeight){
@@ -135,6 +138,26 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     }
     public boolean canMoveTo(Vector2d position){
         return (position.x <= worldMapUpperRight.x && position.x >= worldMapLowerLeft.x && position.y <= worldMapUpperRight.y && position.y >= worldMapLowerLeft.y);
+    }
+
+    public Vector2d adjustPosition(Vector2d position){
+        int x = position.x;
+        int y = position.y;
+        if (position.x == worldMapLowerLeft.x -1){
+            x = worldMapUpperRight.x;
+        }
+        if (position.x == worldMapUpperRight.x +1){
+            x = worldMapLowerLeft.x;
+        }
+        if (position.y == worldMapLowerLeft.y -1){
+            y = worldMapUpperRight.y;
+        }
+        if (position.y == worldMapUpperRight.y +1){
+            y = worldMapLowerLeft.y;
+        }
+        return new Vector2d(x,y);
+
+
     }
 
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal){
@@ -259,7 +282,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
             }
 
             else if (animalsOnPosition.toArray().length>2){
-                Animal animal1 = findTheStrongest(100000, animalsOnPosition);
+                Animal animal1 = findTheStrongest(Integer.MAX_VALUE, animalsOnPosition);
                 Animal animal2 = null;
                 for(Animal animal : animalsOnPosition){
                     if (animal.getAnimalEnergy() == animal1.getAnimalEnergy()){
@@ -336,9 +359,12 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     public Color colorOnPosition(Vector2d position){
         Object object = objectAt(position);
         if (object instanceof Animal){
-            Animal animal = findTheStrongest(10000, animals.get(position));
+            Animal animal = findTheStrongest(Integer.MAX_VALUE, animals.get(position));
             if(animal.getAnimalEnergy()<=0){
                 return animationColours.deadAnimal;
+            }
+            if(animal.equals(followedAnimal)){
+                return animationColours.followed;
             }
             return animationColours.getAnimalColor(worldParameters.getInitialEnergy(), animal.getAnimalEnergy());
         }
@@ -384,14 +410,56 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     }
 
     public String displayAnimalGenome(Vector2d position){
+        if (animals.get(position)==null){
+            return "There is no animal";
+        }
+
         if (animals.get(position).size()==1){
             return animals.get(position).get(0).getGenome().displayGenome();
         }
         else if(animals.get(position).size()>1){
-            Animal animal = findTheStrongest(10000, animals.get(position));
+            Animal animal = findTheStrongest(Integer.MAX_VALUE, animals.get(position));
             return animal.getGenome().displayGenome();
         }
-        return "There is no animal";
+        return null;
+
+    }
+    // dodaj zwierzę do obserowania
+    public void addToFollow(Vector2d position){
+        if (animals.get(position)==null){
+            System.out.println( "There is no animal");
+            return;
+        }
+        Animal animal = findTheStrongest(Integer.MAX_VALUE, animals.get(position));
+        this.followedAnimal = animal;
+        statistics.addAnimalToFollow(animal);
+
+
+    }
+
+    public void checkIfAlive(){
+        if(followedAnimal!=null && followedAnimal.getAnimalEnergy()==0){
+            statistics.animalDied();
+        }
+    }
+
+    public void removeToFollow(){
+        statistics.stopFollowing(followedAnimal);
+        followedAnimal = null;
+    }
+
+
+    public boolean dominantAnimal(Vector2d position){
+        Object object = objectAt(position);
+        if (object instanceof Animal){
+            Animal animal = findTheStrongest(Integer.MAX_VALUE, animals.get(position));
+            if (Arrays.equals(animal.getGenome().getGenesNumber(),statistics.getDominantGenome())){
+                return true;
+            }
+            return false;
+        }
+        return false;
+
     }
 
 }

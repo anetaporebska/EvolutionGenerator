@@ -4,6 +4,7 @@ import main.math.Statistics;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class StatisticsPanel extends JPanel {
 
@@ -43,7 +44,7 @@ public class StatisticsPanel extends JPanel {
         dayNumber.setText("Day: " + statistics.getDay());
         numberOfAnimals.setText("Current number of animals: "+statistics.getNumberOfAnimals());
         numberOfGrass.setText("Current number of grass: "+statistics.getNumberOfGrass());
-        dominantGenome.setText("Dominant genome: " + statistics.getDominantGenome());
+        dominantGenome.setText("Dominant genome: " + Arrays.toString(  statistics.getDominantGenome()));
         averageEnergy.setText("Average energy for living animals: "+statistics.getAverageEnergy());
         averageAge.setText("Average age for dead animals: "+statistics.getAverageAge());
         averageNumberOfChildren.setText("Average number of children: "+statistics.getAverageNumberOfChildren());

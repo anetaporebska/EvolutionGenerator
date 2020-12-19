@@ -68,7 +68,11 @@ public class Animal{
         if (map.canMoveTo(newPosition)){
             notifyObservers(this.position, newPosition);
             this.position = newPosition;
-
+        }
+        else{
+            newPosition = map.adjustPosition(newPosition);
+            notifyObservers(this.position, newPosition);
+            this.position = newPosition;
         }
 
     }

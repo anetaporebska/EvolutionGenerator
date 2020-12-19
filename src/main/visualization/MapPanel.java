@@ -13,8 +13,6 @@ import main.math.Vector2d;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -33,6 +31,8 @@ public class MapPanel extends JPanel implements MouseListener {
     // arrayList, bo chcę mieć zachowaną kolejność
 
     ArrayList<JLabel> labels = new ArrayList<>();
+
+    boolean action = false;
 
 
     MapPanel(WorldMap worldMap){
@@ -65,6 +65,22 @@ public class MapPanel extends JPanel implements MouseListener {
 
     }
 
+    public void displayDominant(){
+
+        for (int i=0; i< worldHeight; i++){
+            for (int j=0; j < worldWidth; j++){
+                JLabel label = labels.get(getIndex(i,j));
+                //label.setBackground(worldMap.colorOnPosition(new Vector2d(i,j)));
+                if(worldMap.dominantAnimal(new Vector2d(i,j))){
+                    label.setBackground(Color.BLUE);
+                }
+
+            }
+        }
+
+    }
+
+
     private int getIndex(int x, int y){
         return x*worldWidth+y;
     }
@@ -81,7 +97,8 @@ public class MapPanel extends JPanel implements MouseListener {
     }
 
     // jak dodaję mouse listener to muszę jessze gdzieś powiedzieć co chcę żeby się działo -> mam 2 opcje
-    public void addMouseListeners(){
+    public void addMouseListeners(boolean displayGenome){
+        this.action = displayGenome;
 
         for (JLabel jLabel : labels){
             jLabel.addMouseListener(this);
@@ -102,23 +119,33 @@ public class MapPanel extends JPanel implements MouseListener {
         System.out.println("Clicked on "+ mouseEvent.getSource().toString());
         JLabel labelClicked = (JLabel) mouseEvent.getSource();
 
-        // znajdź mi tera tego labela
-        for (int i=0; i< worldHeight; i++){
-            for (int j=0; j < worldWidth; j++){
-                int idx = getIndex(i,j);
-                if (labels.get(idx).equals(labelClicked)){
-                    // wyświetl mi tu zwierzę co to go kliknięto
-                    System.out.println("współrzędne");
-                    System.out.println(i);
-                    System.out.println(j);
-                    String genome =worldMap.displayAnimalGenome(new Vector2d(i,j));
-                    new GenomeFrame(genome,i,j);
+        // display genome of 1 animal
+        if (this.action==true){
+            for (int i=0; i< worldHeight; i++){
+                for (int j=0; j < worldWidth; j++){
+                    int idx = getIndex(i,j);
+                    if (labels.get(idx).equals(labelClicked)){
+                        String genome =worldMap.displayAnimalGenome(new Vector2d(i,j));
+                        new GenomeFrame(genome,i,j);
+                    }
                 }
             }
         }
+        else{
+            for (int i=0; i< worldHeight; i++){
+                for (int j=0; j < worldWidth; j++){
+                    int idx = getIndex(i,j);
+                    if (labels.get(idx).equals(labelClicked)){
+                        worldMap.addToFollow(new Vector2d(i,j));
+                    }
+                }
+            }
+
+        }
+        deleteMouseListeners();
 
 
-       deleteMouseListeners();
+
 
 
 

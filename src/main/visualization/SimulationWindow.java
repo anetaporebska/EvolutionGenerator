@@ -29,11 +29,17 @@ public class SimulationWindow implements ActionListener, Runnable {
     JButton animalGenomeButton = new JButton("Choose animal to display genome");
     JButton dominantGenomeButton = new JButton("Display animals with dominant genome");
 
+    JButton followAnimalButton = new JButton("Start to follow animal");
+
+    JTextField numberOfDays;
+
 
     Timer timer = new Timer(10, this);
 
     int n;
     int i = 1;
+    int displayDay;
+
 
     public void run(){
         timer.start();
@@ -48,7 +54,7 @@ public class SimulationWindow implements ActionListener, Runnable {
         engine = new SimulationEngine(worldMap,worldParameters);
         worldMap.updateStatistics();
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(500,1000);
 
         n = worldParameters.getNumberOfDays();
@@ -61,31 +67,36 @@ public class SimulationWindow implements ActionListener, Runnable {
         statisticsPanel.setBounds(0, 500, 500,200);
         frame.add(statisticsPanel);
 
-        stopButton.setBounds(0,700,250,50);
+        stopButton.setBounds(0,700,300,50);
         stopButton.setFocusable(false);
         stopButton.addActionListener(this);
 
 
-        startButton.setBounds(0,900, 250, 50);
+        startButton.setBounds(0,900, 300, 50);
         startButton.setFocusable(false);
         startButton.setEnabled(false);
         startButton.addActionListener(this);
 
 
-        followButton.setBounds(0,750, 250,50);
+        followButton.setBounds(0,750, 300,50);
         followButton.setFocusable(false);
         followButton.addActionListener(this);
         followButton.setEnabled(false);
 
-        animalGenomeButton.setBounds(0,800,250,50);
+        animalGenomeButton.setBounds(0,800,300,50);
         animalGenomeButton.setFocusable(false);
         animalGenomeButton.addActionListener(this);
         animalGenomeButton.setEnabled(false);
 
-        dominantGenomeButton.setBounds(0,850, 250,50);
+        dominantGenomeButton.setBounds(0,850, 300,50);
         dominantGenomeButton.setFocusable(false);
         dominantGenomeButton.addActionListener(this);
         dominantGenomeButton.setEnabled(false);
+
+        followAnimalButton.setBounds(350, 800, 150,50);
+        followAnimalButton.setFocusable(true);
+        followAnimalButton.setEnabled(false);
+        followAnimalButton.addActionListener(this);
 
 
 
@@ -94,6 +105,7 @@ public class SimulationWindow implements ActionListener, Runnable {
         frame.add(followButton);
         frame.add(animalGenomeButton);
         frame.add(dominantGenomeButton);
+        frame.add(followAnimalButton);
 
 
         frame.setLayout(null);
@@ -125,33 +137,27 @@ public class SimulationWindow implements ActionListener, Runnable {
             followButton.setEnabled(false);
             animalGenomeButton.setEnabled(false);
             dominantGenomeButton.setEnabled(false);
-            // dodać mouse listener do wszystkich JLabel, gdzie jest zwierzę
+            mapPanel.addMouseListeners(false);
 
-            // action listener niech mi zwróci współrzędne zwierzątka
-
-            //
-
-
-
+            // get number of days
+            numberOfDays = new JTextField("Number of days");
+            numberOfDays.setBounds(350, 750, 150,50);
+            frame.add(numberOfDays);
+            followAnimalButton.setEnabled(true);
         }
+        else if (actionEvent.getSource()==followAnimalButton){
+            //TODO wyjątek
+            String N = numberOfDays.getText();
+            displayDay = convert(N) + i;
+            followAnimalButton.setEnabled(false);
+        }
+
+
         else if(actionEvent.getSource()==animalGenomeButton){
             followButton.setEnabled(false);
             animalGenomeButton.setEnabled(false);
             dominantGenomeButton.setEnabled(false);
-            // dodać mouse listener do wszystkich JLabel, gdzie jest zwierzę
-            mapPanel.addMouseListeners();
-
-            // teraz pozwól użytkownikowi kliknąć -> zanim usuniesz!
-
-            // action listener niech mi zwróci współrzędne zwierzątka
-
-            // mapa niech mi zwróci genom tego zwierzątka -> wyświetlić w nowym oknie
-
-            // nie modyfikować nic w tablicy, bo teraz chcę dać start i żeby wszystko było jak przedtem
-
-            // pewnie usunąć mouse listener
-            //mapPanel.deleteMouseListeners();
-
+            mapPanel.addMouseListeners(true);
 
 
         }
@@ -159,11 +165,19 @@ public class SimulationWindow implements ActionListener, Runnable {
             followButton.setEnabled(false);
             animalGenomeButton.setEnabled(false);
             dominantGenomeButton.setEnabled(false);
-
+            mapPanel.displayDominant();
+            frame.repaint();
 
         }
         else {
             i+=1;
+            worldMap.checkIfAlive();
+
+            if (i==displayDay){
+                worldMap.removeToFollow();
+                new AnimalStatisticsFrame(statistics);
+            }
+
             if (i==n+1){
                 timer.stop();
                 startButton.setEnabled(false);
@@ -178,4 +192,17 @@ public class SimulationWindow implements ActionListener, Runnable {
 
 
     }
+
+    private int convert(String text){
+        try{
+            int argument = Integer.parseInt(text.trim());
+            return argument;
+        }
+        catch (NumberFormatException nfe){
+            System.out.println("NumberFormatException: "+nfe.getMessage());
+        }
+        return -1; //TODO to nie do końca może tak być
+    }
+
+
 }

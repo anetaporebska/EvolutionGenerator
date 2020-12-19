@@ -29,6 +29,8 @@ public class AnimationColours {
     // more than 250% of initial energy
     private final Color energy300 = new Color(204, 0, 0);
 
+    public final Color followed = new Color(8, 29, 141);
+
 
     public Color getAnimalColor(int initialEnergy, int animalEnergy){
         float ratio = (float) animalEnergy/initialEnergy;

@@ -68,22 +68,22 @@ public class LaunchPage implements ActionListener {
         initialEnergy = new JTextField("200");
         initialEnergy.setBounds(10,30,400,30);
 
-        initialNoAnimals = new JTextField("400");
+        initialNoAnimals = new JTextField("40");
         initialNoAnimals.setBounds(10,90,400,30);
 
-        initialNoGrass = new JTextField("200");
+        initialNoGrass = new JTextField("50");
         initialNoGrass.setBounds(10,150,400,30);
 
-        jungleWidth = new JTextField("40");
+        jungleWidth = new JTextField("10");
         jungleWidth.setBounds(10,210,400,30);
 
-        jungleHeight = new JTextField("40");
+        jungleHeight = new JTextField("10");
         jungleHeight.setBounds(10,270,400,30);
 
-        worldWidth = new JTextField("100");
+        worldWidth = new JTextField("30");
         worldWidth.setBounds(10,330,400,30);
 
-        worldHeight = new JTextField("100");
+        worldHeight = new JTextField("30");
         worldHeight.setBounds(10,390,400,30);
 
         energyFromGrass = new JTextField("50");
@@ -132,10 +132,6 @@ public class LaunchPage implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource()==endButton){
 
-            // ustaw parametry w WorldParameters
-            // łap wyjątki -> chcemy tylko inty
-            // width, height > 0
-            // itd
             worldParameters.setInitialEnergy(convert(initialEnergy.getText()));
             worldParameters.setInitialNoAnimals(convert(initialNoAnimals.getText()));
             worldParameters.setInitialNoGrass(convert(initialNoGrass.getText()));

@@ -8,6 +8,7 @@ import java.util.*;
 // TODO Statistics jako 3 observer dla mapy? - tylko to już nie będzie positionChanged
 public class Statistics {
 
+    // all animal statistics
     private int numberOfAnimals;
     private int numberOfGrass;
     private int numberOfDeadAnimals =0;
@@ -19,9 +20,18 @@ public class Statistics {
     private FamilyTree familyTree = new FamilyTree();
     private int averageNumberOfChildren;
 
-    // TODO średnia liczba dzieci dla żyjących zwierząt - drzewo jakieś trzeba ogarnąć
 
-    // TODO statystyki dla wybranego zwirzęcia: liczba wszystkich dzieci po n epokach, liczba wszystkich potomków, epoka w której zmarło
+    // single animal statistics
+    private int childrenBefore;
+    private int descendantsBefore;
+    private int startDay;
+    private int dayOfDeath;
+    private int numberOfChildren;
+    private int numberOfDescendants;
+    private boolean dead = false;
+
+
+
 
     public int getNumberOfAnimals(){
         return this.numberOfAnimals;
@@ -54,8 +64,8 @@ public class Statistics {
         return this.day;
     }
 
-    public String getDominantGenome(){
-        return Arrays.toString(dominantGenome);
+    public int [] getDominantGenome(){
+        return dominantGenome;
     }
 
     public void updateStatistics(Map<Vector2d, ArrayList<Animal>> animals, Map<Vector2d, Grass> grass){
@@ -87,7 +97,6 @@ public class Statistics {
 
     }
 
-    // muszę je jakoś posortować?
     public int [] findDominantGenome(ArrayList<int[]> animalGenes){
 
         if (animalGenes.size() ==0){
@@ -157,14 +166,56 @@ public class Statistics {
                 numberOfChildren+= familyTree.getNumberOfChildren(animal);
             }
         }
+        if(numberOfAnimals==0){
+            this.averageNumberOfChildren = 0;
+        }
+        else{
+            this.averageNumberOfChildren = numberOfChildren/numberOfAnimals;
+        }
 
-        this.averageNumberOfChildren = numberOfChildren/numberOfAnimals;
     }
 
     public int getAverageNumberOfChildren(){
         return averageNumberOfChildren;
     }
 
+
+
+    public void addAnimalToFollow(Animal animal){
+        childrenBefore = familyTree.getNumberOfChildren(animal);
+        descendantsBefore = familyTree.getNumberOfDescendants(animal);
+        startDay = getDay();
+
+    }
+
+    public void animalDied(){
+        if (!this.dead){
+            this.dead = true;
+            this.dayOfDeath = getDay();
+        }
+
+    }
+
+    public int getDayOfDeath(){
+        if (dayOfDeath==0){
+            return -1;
+        }
+        return dayOfDeath;
+    }
+
+    public void stopFollowing(Animal animal){
+        numberOfChildren = familyTree.getNumberOfChildren(animal) - childrenBefore;
+        numberOfDescendants = familyTree.getNumberOfDescendants(animal)-descendantsBefore;
+
+    }
+
+    public int getNumberOfDescendants(){
+        return numberOfDescendants;
+    }
+
+    public int getNumberOfChildren(){
+        return numberOfChildren;
+    }
 
 
 
