@@ -7,15 +7,9 @@ public interface IWorldMap {
 
     boolean canMoveTo(Vector2d position);
 
-
-    //boolean place(Animal animal);
-
     boolean isOccupied(Vector2d position);
 
     Object objectAt(Vector2d position);
-
-    Vector2d getWorldMapUpperRight();
-    Vector2d getWorldMapLowerLeft();
 
     Animal placeAnimal(int initialEnergy);
 
@@ -27,7 +21,6 @@ public interface IWorldMap {
 
     void eatGrass(int energyFromGrass);
     void removeAnimal(Animal animal);
-    int getNumberOfGrass();
 
     void reproductionOfAnimals();
 

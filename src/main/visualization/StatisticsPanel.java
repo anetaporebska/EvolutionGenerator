@@ -9,18 +9,16 @@ import java.util.Arrays;
 
 public class StatisticsPanel extends JPanel {
 
-    JLabel dayNumber = new JLabel();
-    JLabel numberOfAnimals = new JLabel();
-    JLabel numberOfGrass = new JLabel();
-    JLabel dominantGenome = new JLabel();
-    JLabel averageEnergy = new JLabel();
-    JLabel averageAge = new JLabel();
-    JLabel averageNumberOfChildren = new JLabel();
+    private JLabel dayNumber = new JLabel();
+    private JLabel numberOfAnimals = new JLabel();
+    private JLabel numberOfGrass = new JLabel();
+    private JLabel dominantGenome = new JLabel();
+    private JLabel averageEnergy = new JLabel();
+    private JLabel averageAge = new JLabel();
+    private JLabel averageNumberOfChildren = new JLabel();
 
-
-
-    Statistics statistics;
-    AverageStatistics averageStatistics = new AverageStatistics();
+    private Statistics statistics;
+    private AverageStatistics averageStatistics = new AverageStatistics();
 
     StatisticsPanel(Statistics statistics){
         this.statistics = statistics;
@@ -36,7 +34,6 @@ public class StatisticsPanel extends JPanel {
         this.add(averageNumberOfChildren);
 
         this.setVisible(true);
-
 
 
     }

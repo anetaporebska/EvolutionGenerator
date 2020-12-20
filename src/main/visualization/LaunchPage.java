@@ -129,35 +129,33 @@ public class LaunchPage implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource()==endButton){
+            try {
+                worldParameters.setInitialEnergy(convert(initialEnergy.getText()));
+                worldParameters.setInitialNoAnimals(convert(initialNoAnimals.getText()));
+                worldParameters.setInitialNoGrass(convert(initialNoGrass.getText()));
+                worldParameters.setJungleWidth(convert(jungleWidth.getText()));
+                worldParameters.setJungleHeight(convert(jungleHeight.getText()));
+                worldParameters.setWorldWidth(convert(worldWidth.getText()));
+                worldParameters.setWorldHeight(convert(worldHeight.getText()));
+                worldParameters.setEnergyFromGrass(convert(energyFromGrass.getText()));
+                worldParameters.setNumberOfDays(convert(numberOfDays.getText()));
 
-            worldParameters.setInitialEnergy(convert(initialEnergy.getText()));
-            worldParameters.setInitialNoAnimals(convert(initialNoAnimals.getText()));
-            worldParameters.setInitialNoGrass(convert(initialNoGrass.getText()));
-            worldParameters.setJungleWidth(convert(jungleWidth.getText()));
-            worldParameters.setJungleHeight(convert(jungleHeight.getText()));
-            worldParameters.setWorldWidth(convert(worldWidth.getText()));
-            worldParameters.setWorldHeight(convert(worldHeight.getText()));
-            worldParameters.setEnergyFromGrass(convert(energyFromGrass.getText()));
-            worldParameters.setNumberOfDays(convert(numberOfDays.getText()));
+                frame.dispose();
+                new Thread (new SimulationWindow(worldParameters)).start();
+                new Thread (new SimulationWindow(worldParameters)).start();
 
-            frame.dispose();
-
-
-            new Thread (new SimulationWindow(worldParameters)).start();
-            new Thread (new SimulationWindow(worldParameters)).start();
+            }
+            catch (NumberFormatException nfe){
+                System.out.println("NumberFormatException: "+nfe.getMessage());
+            }
 
         }
     }
 
     private int convert(String text){
-        try{
-            int argument = Integer.parseInt(text.trim());
-            return argument;
-        }
-        catch (NumberFormatException nfe){
-            System.out.println("NumberFormatException: "+nfe.getMessage());
-        }
-        return -1; //TODO to nie do końca może tak być
+        int argument = Integer.parseInt(text.trim());
+        return argument;
+
     }
 
 }

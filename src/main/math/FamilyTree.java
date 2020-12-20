@@ -6,7 +6,6 @@ import java.util.*;
 
 public class FamilyTree {
 
-    // ogromna hash mapa, w której mamy dane zwierzę i jego dzieci -> jak chcę uzyskać potomków, to dzieci + dzieci dzieci + dzieci dzieci dzieci + ...
     private Map<Animal, ArrayList<Animal>> animalChildren = new LinkedHashMap<>();
 
     public void addAncestors(Map<Vector2d, ArrayList<Animal>> animals){
@@ -38,11 +37,8 @@ public class FamilyTree {
         return animalChildren.get(animal).size();
     }
 
-    // trzeba pilnować, żeby nie zapętlić się i liczyć kilka razy dzieci dnaego zwierzątka (bo rodzic może rozmnażać się z dzieckiem)
-    public int getNumberOfDescendants(Animal animal){
-        // mogęmieć set z potomkami - nie będie powtórzeć
-        // od przodka do jego dzieci , nie będzie pętli tylko powtórzenia
 
+    public int getNumberOfDescendants(Animal animal){
         Set<Animal> set = new HashSet<>();
 
         Queue<Animal> queue = new LinkedList<>();

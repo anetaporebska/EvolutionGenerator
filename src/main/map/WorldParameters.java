@@ -1,6 +1,12 @@
 package main.map;
 
-//import org.json.simple.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 
 public class WorldParameters {
@@ -94,7 +100,42 @@ public class WorldParameters {
 
 
     public void readParameters(){
-        //JSONParser parser
+        JSONParser parser = new JSONParser();
+
+        try {
+            Object object = parser.parse(new FileReader("parameters.json"));
+            JSONObject jsonObject = (JSONObject) object;
+            int numberOfAnimals = Integer.parseInt(jsonObject.get("number of animals").toString());
+            int startEnergy = Integer.parseInt(jsonObject.get("start energy").toString());
+            int numberOfGrass = Integer.parseInt(jsonObject.get("number of grass").toString());
+            int jungleWidth = Integer.parseInt(jsonObject.get("jungle width").toString());
+            int jungleHeight = Integer.parseInt(jsonObject.get("jungle height").toString());
+            int worldWidth = Integer.parseInt(jsonObject.get("world width").toString());
+            int worldHeight = Integer.parseInt(jsonObject.get("world height").toString());
+            int days = Integer.parseInt(jsonObject.get( "number of days").toString());
+            int grassEnergy= Integer.parseInt(jsonObject.get( "energy of grass").toString());
+
+            System.out.println(numberOfAnimals + " " + startEnergy + " " +numberOfGrass+ " " +jungleHeight+ " " +jungleWidth+ " " + worldWidth+ " " + worldHeight+ " " +days+ " " + grassEnergy);
+
+            setInitialNoAnimals(numberOfAnimals);
+            setInitialEnergy(startEnergy);
+            setInitialNoGrass(numberOfGrass);
+            setJungleWidth(jungleWidth);
+            setJungleHeight(jungleHeight);
+            setWorldWidth(worldWidth);
+            setWorldHeight(worldHeight);
+            setNumberOfDays(days);
+            setEnergyFromGrass(grassEnergy);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
     }
 
 

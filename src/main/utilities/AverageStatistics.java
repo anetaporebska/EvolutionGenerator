@@ -48,7 +48,7 @@ public class AverageStatistics {
 
     public void write(){
         try{
-            FileWriter fileWriter = new FileWriter("file.txt");
+            FileWriter fileWriter = new FileWriter("statistics.txt");
             fileWriter.write("Day \t Average number of animals \t Average number of grass \t Average energy \t Average age \t Average number of children \t Average genome \n");
             for(int i=0; i< days.size(); i++){
                 int day = days.get(i);

@@ -1,13 +1,5 @@
 package main.visualization;
 
-// wyświetlanie aktualnej mapy ?
-
-
-// za każdym razem gdy cokolwiek się zmieni musimy informować o tym mapPanel
-// energia zwierzęcia, nowe zwierzę, nowa trawa, trawa zjedzona wszystko !!!
-
-// nieoptymalnie można tworzyć za każdym razem nowy MapPanel
-
 import main.map.WorldMap;
 import main.math.Vector2d;
 
@@ -22,18 +14,10 @@ public class MapPanel extends JPanel implements MouseListener {
     int worldWidth;
     int worldHeight;
 
-    WorldMap worldMap;
-
-    AnimationColours animationColours = new AnimationColours();
-
-
-    // może 2d array of labels -> może być w sumie 1d
-    // arrayList, bo chcę mieć zachowaną kolejność
-
-    ArrayList<JLabel> labels = new ArrayList<>();
-
-    boolean action = false;
-
+    private WorldMap worldMap;
+    private AnimationColours animationColours = new AnimationColours();
+    private ArrayList<JLabel> labels = new ArrayList<>();
+    private boolean action = false;
 
     MapPanel(WorldMap worldMap){
 
@@ -41,9 +25,7 @@ public class MapPanel extends JPanel implements MouseListener {
         this.worldWidth = worldMap.getWorldWidth();
         this.worldHeight = worldMap.getWorldHeight();
         worldMap.addObserver(this);
-
-        //this.setPreferredSize(new Dimension(worldWidth, worldHeight));
-        this.setLayout(new GridLayout(worldWidth, worldHeight));
+        this.setLayout(new GridLayout(worldHeight, worldWidth));
 
         initializeLabels();
         this.setVisible(true);
@@ -70,11 +52,9 @@ public class MapPanel extends JPanel implements MouseListener {
         for (int i=0; i< worldHeight; i++){
             for (int j=0; j < worldWidth; j++){
                 JLabel label = labels.get(getIndex(i,j));
-                //label.setBackground(worldMap.colorOnPosition(new Vector2d(i,j)));
                 if(worldMap.dominantAnimal(new Vector2d(i,j))){
                     label.setBackground(Color.BLUE);
                 }
-
             }
         }
 
@@ -96,10 +76,8 @@ public class MapPanel extends JPanel implements MouseListener {
 
     }
 
-    // jak dodaję mouse listener to muszę jessze gdzieś powiedzieć co chcę żeby się działo -> mam 2 opcje
     public void addMouseListeners(boolean displayGenome){
         this.action = displayGenome;
-
         for (JLabel jLabel : labels){
             jLabel.addMouseListener(this);
         }
@@ -120,7 +98,7 @@ public class MapPanel extends JPanel implements MouseListener {
         JLabel labelClicked = (JLabel) mouseEvent.getSource();
 
         // display genome of 1 animal
-        if (this.action==true){
+        if (this.action){
             for (int i=0; i< worldHeight; i++){
                 for (int j=0; j < worldWidth; j++){
                     int idx = getIndex(i,j);
@@ -131,6 +109,7 @@ public class MapPanel extends JPanel implements MouseListener {
                 }
             }
         }
+        // add animal to follow
         else{
             for (int i=0; i< worldHeight; i++){
                 for (int j=0; j < worldWidth; j++){
@@ -143,11 +122,6 @@ public class MapPanel extends JPanel implements MouseListener {
 
         }
         deleteMouseListeners();
-
-
-
-
-
 
     }
 

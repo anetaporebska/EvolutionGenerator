@@ -143,7 +143,7 @@ public class Statistics {
                     return 1;
                 }
             }
-            return 0; //wszystkie geny są takie same
+            return 0; //all genes are the same
 
         }
 

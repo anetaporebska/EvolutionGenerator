@@ -31,13 +31,11 @@ public class SimulationWindow implements ActionListener, Runnable {
     private JButton followAnimalButton = new JButton("Start following");
 
     private JTextField numberOfDays;
+    private Timer timer = new Timer(10 , this);
 
-
-    private Timer timer = new Timer(50 , this);
-
-    int n;
-    int i = 1;
-    int displayDay;
+    private int n;
+    private int day = 1;
+    private int displayDay;
 
 
     public void run(){
@@ -142,20 +140,21 @@ public class SimulationWindow implements ActionListener, Runnable {
             followAnimalButton.setEnabled(true);
         }
         else if (actionEvent.getSource()==followAnimalButton){
-            //TODO wyjątek
-            String N = numberOfDays.getText();
-            displayDay = convert(N) + i;
+            try {
+                String N = numberOfDays.getText();
+                displayDay = convert(N) + day;
+            }
+            catch (NumberFormatException nfe){
+                System.out.println("NumberFormatException: "+nfe.getMessage());
+            }
             followAnimalButton.setEnabled(false);
+
         }
-
-
         else if(actionEvent.getSource()==animalGenomeButton){
             followButton.setEnabled(false);
             animalGenomeButton.setEnabled(false);
             dominantGenomeButton.setEnabled(false);
             mapPanel.addMouseListeners(true);
-
-
         }
         else if(actionEvent.getSource()==dominantGenomeButton){
             followButton.setEnabled(false);
@@ -163,18 +162,17 @@ public class SimulationWindow implements ActionListener, Runnable {
             dominantGenomeButton.setEnabled(false);
             mapPanel.displayDominant();
             frame.repaint();
-
         }
         else {
-            i+=1;
+            day+=1;
             worldMap.checkIfAlive();
 
-            if (i==displayDay){
+            if (day==displayDay){
                 worldMap.removeToFollow();
                 new AnimalStatisticsFrame(statistics);
             }
 
-            if (i==n+1){
+            if (day==n+1){
                 timer.stop();
                 startButton.setEnabled(false);
                 stopButton.setEnabled(false);
@@ -185,20 +183,12 @@ public class SimulationWindow implements ActionListener, Runnable {
             statisticsPanel.updateLabels();
             frame.repaint();
         }
-
-
-
     }
 
     private int convert(String text){
-        try{
-            int argument = Integer.parseInt(text.trim());
-            return argument;
-        }
-        catch (NumberFormatException nfe){
-            System.out.println("NumberFormatException: "+nfe.getMessage());
-        }
-        return -1; //TODO to nie do końca może tak być
+        int argument = Integer.parseInt(text.trim());
+        return argument;
+
     }
 
 

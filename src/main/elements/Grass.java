@@ -6,7 +6,7 @@ import main.interfaces.IWorldMap;
 public class Grass {
 
     private Vector2d position;
-    protected IWorldMap map;
+    private IWorldMap map;
 
     public Grass(IWorldMap map, Vector2d position){
         this.map = map;

@@ -13,19 +13,15 @@ public class World {
         new LaunchPage();
 
         // read parameters from file
-        WorldParameters worldParameters = new WorldParameters();
-        worldParameters.readParameters();
-        new Thread (new SimulationWindow(worldParameters)).start();
-        new Thread (new SimulationWindow(worldParameters)).start();
-
-
+        //WorldParameters worldParameters = new WorldParameters();
+        //worldParameters.readParameters();
+        //new Thread (new SimulationWindow(worldParameters)).start();
+        //new Thread (new SimulationWindow(worldParameters)).start();
 
     }
 
-
 }
 
-// TODO Wczytywanie z pliku
 
 
 
