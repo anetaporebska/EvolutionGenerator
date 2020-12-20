@@ -1,17 +1,23 @@
 package main;
 
 
+import main.map.WorldParameters;
 import main.visualization.LaunchPage;
+import main.visualization.SimulationWindow;
 
 public class World {
 
     public static void main(String[] args) {
 
-        // TODO JFrame() z podaniem parametrów dla mapy -> przyciski i przechwytywanie -> wyjątki
+        // launch application with launch page and set parameters
         new LaunchPage();
 
+        // read parameters from file
+        WorldParameters worldParameters = new WorldParameters();
+        worldParameters.readParameters();
+        new Thread (new SimulationWindow(worldParameters)).start();
+        new Thread (new SimulationWindow(worldParameters)).start();
 
-        // TODO JFrame() z wykresami do statystyk, mapą i resztą
 
 
     }
@@ -19,11 +25,6 @@ public class World {
 
 }
 
-// TODO Wizualizacje
-// TODO Statystyki - jakieś drzewa dla liczby potomków
-// TODO Śledzenie jednego zwierzątka
-// TODO Testy
-// TODO Zatrzymywanie animacji
 // TODO Wczytywanie z pliku
 
 

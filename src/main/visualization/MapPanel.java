@@ -8,7 +8,7 @@ package main.visualization;
 
 // nieoptymalnie można tworzyć za każdym razem nowy MapPanel
 
-import main.maps.WorldMap;
+import main.map.WorldMap;
 import main.math.Vector2d;
 
 import javax.swing.*;

@@ -1,6 +1,6 @@
 package main.utilities;
 
-import main.maps.WorldParameters;
+import main.map.WorldParameters;
 import main.elements.Animal;
 import main.interfaces.IEngine;
 import main.interfaces.IWorldMap;
@@ -56,15 +56,7 @@ public class SimulationEngine implements IEngine {
     }
 
 
-    public void runDays(int numberOfDays, int energyFromGrass){
-        for(int i=0; i<numberOfDays; i+=1){
-            nextDay();
-            System.out.println(map.toString());
-        }
-    }
-
-
-    public void removeDeadAnimals(){
+    private void removeDeadAnimals(){
         List<Animal> animalsToDelete = new ArrayList<>();
         for(Animal animal: animals){
             if (animal.checkIfDead()){

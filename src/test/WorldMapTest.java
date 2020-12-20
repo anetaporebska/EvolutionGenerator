@@ -1,9 +1,6 @@
-import main.World;
 import main.elements.Animal;
-import main.maps.WorldMap;
-import main.maps.WorldParameters;
+import main.map.WorldMap;
 import main.math.Vector2d;
-import main.utilities.SimulationEngine;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -12,25 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class WorldMapTest {
 
-
-    //TODO sprawdzić czy zwierzęta nie wychodzą poza mapę
-
-    @Test
-    public void insideBoundariesTest(){
-
-
-        WorldParameters worldParameters = new WorldParameters();
-        worldParameters.setWorldWidth(10);
-        worldParameters.setWorldHeight(10);
-        worldParameters.setJungleHeight(4);
-        worldParameters.setJungleWidth(4);
-        worldParameters.setInitialNoAnimals(10);
-        worldParameters.setEnergyFromGrass(4);
-        worldParameters.setInitialNoGrass(10);
-        worldParameters.setInitialEnergy(200);
-
-
-    }
 
 
     @Test
@@ -51,18 +29,42 @@ public class WorldMapTest {
 
         WorldMap worldMap = new WorldMap(3,3);
 
-        Animal strongest =  worldMap.findTheStrongest(10000,animals);
+        Animal strongest =  worldMap.findTheStrongest(Integer.MAX_VALUE,animals);
         assertEquals(50, strongest.getAnimalEnergy());
         strongest =  worldMap.findTheStrongest(50,animals);
         assertEquals(40, strongest.getAnimalEnergy());
 
+    }
+
+    @Test
+    public void adjustPositionTest(){
+        WorldMap worldMap = new WorldMap(10,10);
+        assertEquals(new Vector2d(9,9), worldMap.adjustPosition(new Vector2d(-1,-1)));
+        assertEquals(new Vector2d(9,0), worldMap.adjustPosition(new Vector2d(-1,0)));
+        assertEquals(new Vector2d(0,0), worldMap.adjustPosition(new Vector2d(0,0)));
+        assertEquals(new Vector2d(5,0), worldMap.adjustPosition(new Vector2d(5,10)));
+    }
 
 
-
+    @Test
+    public void isOccupiedTest(){
+        WorldMap worldMap = new WorldMap(10,10);
+        Animal animal1 = new Animal(new Vector2d(1,1), 10, worldMap);
+        Animal animal2 = new Animal(new Vector2d(1,1), 10, worldMap);
+        worldMap.addAnimal(animal1);
+        worldMap.addAnimal(animal2);
+        assertEquals(true, worldMap.isOccupied(new Vector2d(1,1)));
+        Animal animal3 = new Animal(new Vector2d(2,3), 10, worldMap);
+        Animal animal4 = new Animal(new Vector2d(5,5), 10, worldMap);
+        worldMap.addAnimal(animal3);
+        worldMap.addAnimal(animal4);
+        assertEquals(true, worldMap.isOccupied(new Vector2d(2,3)));
+        assertEquals(true, worldMap.isOccupied(new Vector2d(5,5)));
+        assertEquals(false, worldMap.isOccupied(new Vector2d(6,3)));
 
     }
 
 
-    //TODO
+
 
 }

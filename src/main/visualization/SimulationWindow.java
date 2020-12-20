@@ -1,40 +1,39 @@
 package main.visualization;
 
-import main.World;
-import main.maps.WorldParameters;
+
+import main.map.WorldParameters;
 import main.interfaces.IEngine;
-import main.maps.WorldMap;
+import main.map.WorldMap;
 import main.math.Statistics;
 import main.utilities.SimulationEngine;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SimulationWindow implements ActionListener, Runnable {
 
-    JFrame frame = new JFrame();
+    private JFrame frame = new JFrame();
 
-    WorldMap worldMap;
-    IEngine engine;
-    Statistics statistics = new Statistics();
-    StatisticsPanel statisticsPanel;
-    MapPanel mapPanel;
-
-
-    JButton stopButton = new JButton("Stop simulation");
-    JButton startButton = new JButton("Start simulation");
-
-    JButton followButton = new JButton("Choose animal to follow");
-    JButton animalGenomeButton = new JButton("Choose animal to display genome");
-    JButton dominantGenomeButton = new JButton("Display animals with dominant genome");
-
-    JButton followAnimalButton = new JButton("Start to follow animal");
-
-    JTextField numberOfDays;
+    private WorldMap worldMap;
+    private IEngine engine;
+    private Statistics statistics = new Statistics();
+    private StatisticsPanel statisticsPanel;
+    private MapPanel mapPanel;
 
 
-    Timer timer = new Timer(10, this);
+    private JButton stopButton = new JButton("Stop simulation");
+    private JButton startButton = new JButton("Start simulation");
+
+    private JButton followButton = new JButton("Choose animal to follow");
+    private JButton animalGenomeButton = new JButton("Choose animal to display genome");
+    private JButton dominantGenomeButton = new JButton("Animals with dominant genome");
+
+    private JButton followAnimalButton = new JButton("Start following");
+
+    private JTextField numberOfDays;
+
+
+    private Timer timer = new Timer(50 , this);
 
     int n;
     int i = 1;
@@ -45,16 +44,13 @@ public class SimulationWindow implements ActionListener, Runnable {
         timer.start();
     }
 
-
-
-
-    SimulationWindow( WorldParameters worldParameters){
+    public SimulationWindow( WorldParameters worldParameters){
 
         worldMap = new WorldMap(worldParameters, statistics);
         engine = new SimulationEngine(worldMap,worldParameters);
         worldMap.updateStatistics();
 
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500,1000);
 
         n = worldParameters.getNumberOfDays();
@@ -182,6 +178,7 @@ public class SimulationWindow implements ActionListener, Runnable {
                 timer.stop();
                 startButton.setEnabled(false);
                 stopButton.setEnabled(false);
+                statisticsPanel.getAverageStatistic();
             }
             engine.nextDay();
             worldMap.updateStatistics();

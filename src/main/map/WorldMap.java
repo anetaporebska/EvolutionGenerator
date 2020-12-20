@@ -1,4 +1,4 @@
-package main.maps;
+package main.map;
 
 import main.elements.Animal;
 import main.elements.Genome;
@@ -21,8 +21,6 @@ import java.util.Map;
 
 
 public class WorldMap implements IWorldMap, IPositionChangeObserver {
-    // TODO dodać resztę metod do IWorldMap
-
 
     private Vector2d worldMapUpperRight;
     private Vector2d worldMapLowerLeft;
@@ -87,7 +85,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     }
 
-    private void addAnimal(Animal animal){
+    public void addAnimal(Animal animal){
         Vector2d position = animal.getPosition();
         if (animals.get(position) == null) {
             ArrayList<Animal> arrayList = new ArrayList<>();
@@ -101,18 +99,22 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
         }
         animal.addObserver(this);
-        engine.addAnimal(animal);
-        notifyMapPanel(position);
+        if (engine!=null){
+            engine.addAnimal(animal);
+        }
+        if (mapPanel!=null) {
+            notifyMapPanel(position);
+        }
     }
 
     public void addGrass(){
-        // Jak 5 razy się nie udało nigdzie postawić trawy, to trudno, nie zostanie dodana -> to nie był problem nieskończonej pętli jbc
+
         Vector2d newPosition = randomizer.randomizeElementPosition(worldMapLowerLeft, worldMapUpperRight);
         int i=0;
         while (isOccupied(newPosition) || insideJungle(newPosition)){
             newPosition = randomizer.randomizeElementPosition(worldMapLowerLeft, worldMapUpperRight);
             i+=1;
-            if (i>5){
+            if (i>10){      // if 10 times every place is occupied stop looking
                 break;
             }
         }
@@ -126,7 +128,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         while (isOccupied(newPosition)){
             newPosition = randomizer.randomizeElementPosition(jungleLowerLeft,jungleUpperRight);
             i+=1;
-            if(i>5){
+            if(i>10){
                 break;
             }
         }
@@ -336,7 +338,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
             newPosition = position.add(newOrientation.toUnitVector());
             i+=1;
             if (i==8){      // all positions are occupied
-                while(!canMoveTo(newPosition)){ // jeśli wychodzi poza mapę
+                while(!canMoveTo(newPosition)){
                     newOrientation = newOrientation.next();
                     newPosition = position.add(newOrientation.toUnitVector());
                 }
@@ -424,7 +426,8 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         return null;
 
     }
-    // dodaj zwierzę do obserowania
+
+
     public void addToFollow(Vector2d position){
         if (animals.get(position)==null){
             System.out.println( "There is no animal");

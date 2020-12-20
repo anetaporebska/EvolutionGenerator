@@ -64,7 +64,7 @@ public class Animal{
     public void moveForward(){
         Vector2d moveVector = this.orientation.toUnitVector();
         Vector2d newPosition = this.position.add(moveVector);
-        // zwierzę może się wszędzie poruszać, tylko niech nie wychodzi poza mapę
+
         if (map.canMoveTo(newPosition)){
             notifyObservers(this.position, newPosition);
             this.position = newPosition;

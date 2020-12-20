@@ -1,0 +1,13 @@
+{
+  "start energy": 200,
+  "number of animals": 4,
+  "number of grass": 50,
+  "jungle width": 10,
+  "jungle height": 10,
+  "world width": 30,
+  "world height": 30,
+  "energy of grass": 20,
+  "number of days": 20000
+
+
+}

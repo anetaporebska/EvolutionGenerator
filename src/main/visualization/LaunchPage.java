@@ -1,8 +1,6 @@
 package main.visualization;
 
-import main.maps.WorldParameters;
-import main.utilities.SimulationEngine;
-import main.visualization.SimulationWindow;
+import main.map.WorldParameters;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

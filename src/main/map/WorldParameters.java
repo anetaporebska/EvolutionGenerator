@@ -1,4 +1,7 @@
-package main.maps;
+package main.map;
+
+//import org.json.simple.JSONObject;
+
 
 public class WorldParameters {
 
@@ -87,6 +90,11 @@ public class WorldParameters {
 
     public int getNumberOfDays(){
         return numberOfDays;
+    }
+
+
+    public void readParameters(){
+        //JSONParser parser
     }
 
 

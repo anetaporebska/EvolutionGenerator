@@ -8,8 +8,6 @@ public class Genome {
 
     private final int numberOfGenes = 32;
 
-
-    // TODO genes - sorted array?
     private int [] genes;
     private int [] genesNumber;
 
@@ -41,15 +39,13 @@ public class Genome {
 
     private int [] countGenes(){
         int [] count = new int[8];
-        for(int i =0; i<32; i++){
+        for(int i =0; i<numberOfGenes; i++){
             count[genes[i]]+=1;
         }
         return count;
     }
 
     public static Genome mixGenomes(Genome genome1, Genome genome2){
-
-
 
         int idx1 = randomizer.randomIndex();
         int idx2 = randomizer.randomIndex();
@@ -67,7 +63,7 @@ public class Genome {
             idx2 = p;
         }
         int i =0;
-        if (a == 0 ){ // biorę pierwszą część genomu od animal1
+        if (a == 0 ){
             array1 = Arrays.copyOfRange(genes1, 0, idx1);
             i+=1;
         }
@@ -119,13 +115,10 @@ public class Genome {
 
     }
 
-
     public String displayGenome(){
         return Arrays.toString(this.genes);
     }
 
-
-    // jeśli brakuje jakiegoś genu
     public void fixGenome(){
 
         Arrays.sort(this.genes);
