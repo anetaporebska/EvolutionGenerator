@@ -52,12 +52,5 @@ public class AnimationColours {
             return energy250;
         }
         return energy300;
-
-
-
     }
-
-
-
-
 }

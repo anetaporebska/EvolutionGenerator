@@ -10,13 +10,13 @@ public class World {
     public static void main(String[] args) {
 
         // launch application with launch page and set parameters
-        new LaunchPage();
+        // new LaunchPage();
 
         // read parameters from file
-        //WorldParameters worldParameters = new WorldParameters();
-        //worldParameters.readParameters();
-        //new Thread (new SimulationWindow(worldParameters)).start();
-        //new Thread (new SimulationWindow(worldParameters)).start();
+        WorldParameters worldParameters = new WorldParameters();
+        worldParameters.readParameters();
+        new Thread (new SimulationWindow(worldParameters)).start();
+        new Thread (new SimulationWindow(worldParameters)).start();
 
     }
 

@@ -16,10 +16,8 @@ public class Statistics {
     private int sumOfAge = 0;
     private int day=-1;
     private int [] dominantGenome;
-
     private FamilyTree familyTree = new FamilyTree();
     private int averageNumberOfChildren;
-
 
     // single animal statistics
     private int childrenBefore;
@@ -29,9 +27,6 @@ public class Statistics {
     private int numberOfChildren;
     private int numberOfDescendants;
     private boolean dead = false;
-
-
-
 
     public int getNumberOfAnimals(){
         return this.numberOfAnimals;
@@ -47,7 +42,6 @@ public class Statistics {
         else {
             return 0;
         }
-
     }
 
     public int getAverageAge(){
@@ -57,7 +51,6 @@ public class Statistics {
         else {
             return 0;
         }
-
     }
 
     public int getDay(){
@@ -74,9 +67,7 @@ public class Statistics {
         this.day+=1;
         ArrayList<int[]> animalGenes = new ArrayList<>();
         for (Vector2d position : animals.keySet()){
-
             for (Animal animal : animals.get(position)){
-
                 if (animal.getAnimalEnergy()>0){
                     this.numberOfAnimals+=1;
                     this.sumOfEnergy+=animal.getAnimalEnergy();
@@ -86,15 +77,10 @@ public class Statistics {
                     this.numberOfDeadAnimals+=1;
                     this.sumOfAge+=animal.getAge();
                 }
-
             }
         }
-
         this.numberOfGrass = grass.keySet().size();
-
         this.dominantGenome = findDominantGenome(animalGenes);
-
-
     }
 
     public int [] findDominantGenome(ArrayList<int[]> animalGenes){
@@ -102,7 +88,6 @@ public class Statistics {
         if (animalGenes.size() ==0){
             return null;
         }
-
         Collections.sort(animalGenes,Statistics.Comparator::compareArrays);
 
         int length =1;
@@ -116,18 +101,12 @@ public class Statistics {
                     maxLength = length;
                     genome = animalGenes.get(i);
                 }
-
             }
             else{
                 length=1;
             }
         }
-
         return genome;
-
-
-
-
     }
 
 
@@ -144,9 +123,7 @@ public class Statistics {
                 }
             }
             return 0; //all genes are the same
-
         }
-
     }
 
     public void initializeFamilyTree(Map<Vector2d, ArrayList<Animal>> animals){
@@ -160,7 +137,6 @@ public class Statistics {
     public void setAverageNumberOfChildren(Map<Vector2d, ArrayList<Animal>> animals){
 
         int numberOfChildren = 0;
-
         for (Vector2d vector2d : animals.keySet()){
             for (Animal animal: animals.get(vector2d)){
                 numberOfChildren+= familyTree.getNumberOfChildren(animal);
@@ -193,7 +169,6 @@ public class Statistics {
             this.dead = true;
             this.dayOfDeath = getDay();
         }
-
     }
 
     public int getDayOfDeath(){
@@ -206,7 +181,6 @@ public class Statistics {
     public void stopFollowing(Animal animal){
         numberOfChildren = familyTree.getNumberOfChildren(animal) - childrenBefore;
         numberOfDescendants = familyTree.getNumberOfDescendants(animal)-descendantsBefore;
-
     }
 
     public int getNumberOfDescendants(){

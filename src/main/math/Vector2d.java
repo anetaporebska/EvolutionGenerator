@@ -53,7 +53,6 @@ public class Vector2d {
             return true;
         }
         else return false;
-
     }
 
     public Vector2d opposite(){

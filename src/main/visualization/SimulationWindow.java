@@ -30,12 +30,13 @@ public class SimulationWindow implements ActionListener, Runnable {
 
     private JButton followAnimalButton = new JButton("Start following");
 
-    private JTextField numberOfDays;
-    private Timer timer = new Timer(10 , this);
+    private JTextField numberOfDays = new JTextField();
+    private Timer timer = new Timer(50 , this);
 
     private int n;
     private int day = 1;
     private int displayDay;
+    private boolean follow = false;
 
 
     public void run(){
@@ -65,12 +66,10 @@ public class SimulationWindow implements ActionListener, Runnable {
         stopButton.setFocusable(false);
         stopButton.addActionListener(this);
 
-
         startButton.setBounds(0,900, 300, 50);
         startButton.setFocusable(false);
         startButton.setEnabled(false);
         startButton.addActionListener(this);
-
 
         followButton.setBounds(0,750, 300,50);
         followButton.setFocusable(false);
@@ -92,23 +91,19 @@ public class SimulationWindow implements ActionListener, Runnable {
         followAnimalButton.setEnabled(false);
         followAnimalButton.addActionListener(this);
 
-
-
         frame.add(stopButton);
         frame.add(startButton);
         frame.add(followButton);
         frame.add(animalGenomeButton);
         frame.add(dominantGenomeButton);
         frame.add(followAnimalButton);
+        frame.add(numberOfDays);
 
+        numberOfDays.setVisible(false);
+        followAnimalButton.setVisible(false);
 
         frame.setLayout(null);
         frame.setVisible(true);
-
-
-
-
-
     }
 
     @Override
@@ -120,7 +115,6 @@ public class SimulationWindow implements ActionListener, Runnable {
             followButton.setEnabled(true);
             animalGenomeButton.setEnabled(true);
             dominantGenomeButton.setEnabled(true);
-
         }
         else if(actionEvent.getSource()==startButton){
             startButton.setEnabled(false);
@@ -134,20 +128,26 @@ public class SimulationWindow implements ActionListener, Runnable {
             mapPanel.addMouseListeners(false);
 
             // get number of days
-            numberOfDays = new JTextField("Number of days");
-            numberOfDays.setBounds(350, 750, 150,50);
-            frame.add(numberOfDays);
+            numberOfDays.setText("Number of days");
+            numberOfDays.setBounds(350, 750, 150, 50);
+            numberOfDays.setVisible(true);
             followAnimalButton.setEnabled(true);
+            followAnimalButton.setVisible(true);
         }
         else if (actionEvent.getSource()==followAnimalButton){
-            try {
-                String N = numberOfDays.getText();
-                displayDay = convert(N) + day;
-            }
-            catch (NumberFormatException nfe){
-                System.out.println("NumberFormatException: "+nfe.getMessage());
+            if (mapPanel.checkFollow()){
+                try {
+                    String N = numberOfDays.getText();
+                    displayDay = convert(N) + day;
+                    this.follow = true;
+                } catch (NumberFormatException nfe) {
+                    System.out.println("NumberFormatException: " + nfe.getMessage());
+                    this.follow = false;
+                }
             }
             followAnimalButton.setEnabled(false);
+            followAnimalButton.setVisible(false);
+            numberOfDays.setVisible(false);
 
         }
         else if(actionEvent.getSource()==animalGenomeButton){
@@ -165,10 +165,12 @@ public class SimulationWindow implements ActionListener, Runnable {
         }
         else {
             day+=1;
-            worldMap.checkIfAlive();
-
-            if (day==displayDay){
+            if (follow) {
+                worldMap.checkIfAlive();
+            }
+            if (follow && day==displayDay){
                 worldMap.removeToFollow();
+                follow = false;
                 new AnimalStatisticsFrame(statistics);
             }
 

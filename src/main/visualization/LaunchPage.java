@@ -11,7 +11,6 @@ public class LaunchPage implements ActionListener {
     JFrame frame = new JFrame();
 
     WorldParameters worldParameters = new WorldParameters();
-
     JTextField initialEnergy;
     JTextField initialNoAnimals;
     JTextField initialNoGrass;
@@ -22,11 +21,7 @@ public class LaunchPage implements ActionListener {
     JTextField energyFromGrass;
     JTextField numberOfDays;
 
-
     JButton endButton = new JButton("Start simulation");
-
-
-
 
 
     public LaunchPage(){
@@ -58,10 +53,6 @@ public class LaunchPage implements ActionListener {
 
         JLabel label9 = new JLabel("Number of days: ");
         label9.setBounds(10,480,400,30);
-
-
-
-
 
         initialEnergy = new JTextField("200");
         initialEnergy.setBounds(10,30,400,30);
@@ -100,7 +91,6 @@ public class LaunchPage implements ActionListener {
         frame.add(label8);
         frame.add(label9);
 
-
         frame.add(initialEnergy);
         frame.add(initialNoAnimals);
         frame.add(initialNoGrass);
@@ -110,14 +100,9 @@ public class LaunchPage implements ActionListener {
         frame.add(worldHeight);
         frame.add(energyFromGrass);
         frame.add(numberOfDays);
-
-
-
-
         endButton.setBounds(0,560,400,50);
         endButton.setFocusable(false);
         endButton.addActionListener(this);
-
         frame.add(endButton);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(420,650);
@@ -148,14 +133,12 @@ public class LaunchPage implements ActionListener {
             catch (NumberFormatException nfe){
                 System.out.println("NumberFormatException: "+nfe.getMessage());
             }
-
         }
     }
 
     private int convert(String text){
         int argument = Integer.parseInt(text.trim());
         return argument;
-
     }
 
 }

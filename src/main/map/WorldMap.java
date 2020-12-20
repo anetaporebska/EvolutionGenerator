@@ -24,22 +24,17 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     private Vector2d worldMapUpperRight;
     private Vector2d worldMapLowerLeft;
-
     private Vector2d jungleUpperRight;
     private Vector2d jungleLowerLeft;
-
     private Map<Vector2d, Grass> grass = new LinkedHashMap<>();
     private Map<Vector2d, ArrayList<Animal>> animals = new LinkedHashMap<>();
-
     private Randomizer randomizer = new Randomizer();
     private AnimationColours animationColours = new AnimationColours();
     private IEngine engine;
     private MapPanel mapPanel;
     private WorldParameters worldParameters;
     private Statistics statistics;
-
     private Animal followedAnimal;
-
 
     public WorldMap(int mapWidth, int mapHeight){
         this.worldMapUpperRight = new Vector2d(mapWidth-1, mapHeight-1);
@@ -187,14 +182,6 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     }
 
-    public Vector2d getWorldMapUpperRight(){
-        return worldMapUpperRight;
-    }
-
-    public Vector2d getWorldMapLowerLeft(){
-        return worldMapLowerLeft;
-    }
-
     public boolean isOccupied(Vector2d position){
         if (animals.get(position) != null || grass.get(position)!=null){
             return true;
@@ -264,10 +251,6 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         notifyMapPanel(position);
     }
 
-    public int getNumberOfGrass(){
-        return grass.keySet().size();
-    }
-
     public void reproductionOfAnimals(){
         ArrayList<Animal> animalsToAdd = new ArrayList<>();
         int requiredEnergy = worldParameters.getInitialEnergy()/2;
@@ -280,9 +263,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
                     Animal animalChild = mixAnimals(animal1, animal2, vector2d);
                     animalsToAdd.add(animalChild);
                 }
-
             }
-
             else if (animalsOnPosition.toArray().length>2){
                 Animal animal1 = findTheStrongest(Integer.MAX_VALUE, animalsOnPosition);
                 Animal animal2 = null;
@@ -323,10 +304,8 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     private Animal mixAnimals(Animal animal1, Animal animal2, Vector2d position){
 
         Genome childGenome = Genome.mixGenomes(animal1.getGenome(), animal2.getGenome());
-
         int energy1 = animal1.getAnimalEnergy()/4;
         int energy2 = animal2.getAnimalEnergy()/4;
-
         animal1.useEnergy(energy1);
         animal2.useEnergy(energy2);
 
@@ -404,7 +383,6 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
             statistics.updateStatistics(animals, grass);
             statistics.setAverageNumberOfChildren(animals);
         }
-
     }
 
     public void initializeStatisticsTree(){
@@ -415,7 +393,6 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         if (animals.get(position)==null){
             return "There is no animal";
         }
-
         if (animals.get(position).size()==1){
             return animals.get(position).get(0).getGenome().displayGenome();
         }
@@ -424,20 +401,17 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
             return animal.getGenome().displayGenome();
         }
         return null;
-
     }
 
-
-    public void addToFollow(Vector2d position){
+    public boolean addToFollow(Vector2d position){
         if (animals.get(position)==null){
             System.out.println( "There is no animal");
-            return;
+            return false;
         }
         Animal animal = findTheStrongest(Integer.MAX_VALUE, animals.get(position));
         this.followedAnimal = animal;
         statistics.addAnimalToFollow(animal);
-
-
+        return true;
     }
 
     public void checkIfAlive(){
@@ -451,7 +425,6 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         followedAnimal = null;
     }
 
-
     public boolean dominantAnimal(Vector2d position){
         Object object = objectAt(position);
         if (object instanceof Animal){
@@ -462,7 +435,5 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
             return false;
         }
         return false;
-
     }
-
 }

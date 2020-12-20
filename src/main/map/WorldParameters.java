@@ -3,7 +3,6 @@ package main.map;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,7 +20,6 @@ public class WorldParameters {
     private int energyFromGrass;
     private int numberOfDays;
 
-
     public void setInitialEnergy(int initialEnergy){
         this.initialEnergy = initialEnergy;
     }
@@ -38,7 +36,6 @@ public class WorldParameters {
         return initialNoAnimals;
     }
 
-
     public void setInitialNoGrass(int initialNoGrass){
         this.initialNoGrass = initialNoGrass;
     }
@@ -47,7 +44,6 @@ public class WorldParameters {
         return initialNoGrass;
     }
 
-
     public void setJungleWidth(int jungleWidth){
         this.jungleWidth = jungleWidth;
     }
@@ -55,7 +51,6 @@ public class WorldParameters {
     public int getJungleWidth(){
         return jungleWidth;
     }
-
 
     public void setJungleHeight(int jungleHeight){
         this.jungleHeight = jungleHeight;
@@ -80,7 +75,6 @@ public class WorldParameters {
     public int getWorldHeight(){
         return worldHeight;
     }
-
 
     public void setEnergyFromGrass(int energyFromGrass){
         this.energyFromGrass = energyFromGrass;
@@ -115,8 +109,6 @@ public class WorldParameters {
             int days = Integer.parseInt(jsonObject.get( "number of days").toString());
             int grassEnergy= Integer.parseInt(jsonObject.get( "energy of grass").toString());
 
-            System.out.println(numberOfAnimals + " " + startEnergy + " " +numberOfGrass+ " " +jungleHeight+ " " +jungleWidth+ " " + worldWidth+ " " + worldHeight+ " " +days+ " " + grassEnergy);
-
             setInitialNoAnimals(numberOfAnimals);
             setInitialEnergy(startEnergy);
             setInitialNoGrass(numberOfGrass);
@@ -126,8 +118,6 @@ public class WorldParameters {
             setWorldHeight(worldHeight);
             setNumberOfDays(days);
             setEnergyFromGrass(grassEnergy);
-
-
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {

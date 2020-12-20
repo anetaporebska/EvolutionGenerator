@@ -35,6 +35,7 @@ public interface IWorldMap {
 
     void initializeStatisticsTree();
     String displayAnimalGenome(Vector2d position);
+    boolean addToFollow(Vector2d position);
     void removeToFollow();
     void checkIfAlive();
 

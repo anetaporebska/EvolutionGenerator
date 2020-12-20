@@ -14,7 +14,6 @@ public class AverageStatistics {
     private ArrayList<Integer> averageEnergy = new ArrayList<>();
     private ArrayList<Integer> averageAge = new ArrayList<>();
     private ArrayList<Integer> averageNumberOfChildren = new ArrayList<>();
-
     private ArrayList<int[]> dominantGenome = new ArrayList<>();
 
     public void addDay(int day){
@@ -78,8 +77,6 @@ public class AverageStatistics {
             sum+=data.get(i);
         }
         return sum/end;
-
-
     }
 
     private HashMap<int[],Integer> genomes = new HashMap<>();
@@ -102,14 +99,6 @@ public class AverageStatistics {
             }
         }
         return result;
-
-
-
-
-
-
-
-
     }
 
 }

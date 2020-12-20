@@ -1,6 +1,4 @@
 package main.visualization;
-
-
 import javax.swing.*;
 
 public class GenomeFrame extends JFrame {
@@ -16,5 +14,4 @@ public class GenomeFrame extends JFrame {
         this.add(genomeLabel);
         this.setVisible(true);
     }
-
 }

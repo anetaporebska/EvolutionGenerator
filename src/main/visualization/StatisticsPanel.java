@@ -34,8 +34,6 @@ public class StatisticsPanel extends JPanel {
         this.add(averageNumberOfChildren);
 
         this.setVisible(true);
-
-
     }
 
     public void updateLabels(){
@@ -69,8 +67,6 @@ public class StatisticsPanel extends JPanel {
         result = statistics.getAverageNumberOfChildren();
         averageNumberOfChildren.setText("Average number of children: "+statistics.getAverageNumberOfChildren());
         averageStatistics.addAverageNumberOfChildren(result);
-
-
 
     }
 

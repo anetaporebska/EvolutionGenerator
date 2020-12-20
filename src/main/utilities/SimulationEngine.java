@@ -27,7 +27,6 @@ public class SimulationEngine implements IEngine {
             animals.add(map.placeAnimal(worldParameters.getInitialEnergy()));
         }
         this.map.initializeStatisticsTree();
-
     }
 
 
@@ -52,7 +51,6 @@ public class SimulationEngine implements IEngine {
             animal.changeAge();
 
         }
-
     }
 
 
@@ -68,11 +66,7 @@ public class SimulationEngine implements IEngine {
             animals.remove(animal);
         }
         animalsToDelete.clear();
-
-
     }
-
-
 
 }
 

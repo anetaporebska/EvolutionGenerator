@@ -18,6 +18,7 @@ public class MapPanel extends JPanel implements MouseListener {
     private AnimationColours animationColours = new AnimationColours();
     private ArrayList<JLabel> labels = new ArrayList<>();
     private boolean action = false;
+    private boolean follow;
 
     MapPanel(WorldMap worldMap){
 
@@ -29,8 +30,10 @@ public class MapPanel extends JPanel implements MouseListener {
 
         initializeLabels();
         this.setVisible(true);
+    }
 
-
+    public boolean checkFollow(){
+        return this.follow;
     }
 
     private void initializeLabels(){
@@ -57,7 +60,6 @@ public class MapPanel extends JPanel implements MouseListener {
                 }
             }
         }
-
     }
 
 
@@ -105,6 +107,8 @@ public class MapPanel extends JPanel implements MouseListener {
                     if (labels.get(idx).equals(labelClicked)){
                         String genome =worldMap.displayAnimalGenome(new Vector2d(i,j));
                         new GenomeFrame(genome,i,j);
+                        deleteMouseListeners();
+                        return;
                     }
                 }
             }
@@ -115,13 +119,15 @@ public class MapPanel extends JPanel implements MouseListener {
                 for (int j=0; j < worldWidth; j++){
                     int idx = getIndex(i,j);
                     if (labels.get(idx).equals(labelClicked)){
-                        worldMap.addToFollow(new Vector2d(i,j));
+                        this.follow = worldMap.addToFollow(new Vector2d(i,j));
+                        deleteMouseListeners();
+                        return;
                     }
                 }
             }
 
         }
-        deleteMouseListeners();
+
 
     }
 
