@@ -11,17 +11,17 @@ public class LaunchPage implements ActionListener {
     JFrame frame = new JFrame();
 
     WorldParameters worldParameters = new WorldParameters();
-    JTextField initialEnergy;
-    JTextField initialNoAnimals;
-    JTextField initialNoGrass;
-    JTextField jungleWidth;
-    JTextField jungleHeight;
-    JTextField worldWidth;
-    JTextField worldHeight;
-    JTextField energyFromGrass;
-    JTextField numberOfDays;
+    private JTextField initialEnergy;
+    private JTextField initialNoAnimals;
+    private JTextField initialNoGrass;
+    private JTextField jungleWidth;
+    private JTextField jungleHeight;
+    private JTextField worldWidth;
+    private JTextField worldHeight;
+    private JTextField energyFromGrass;
+    private JTextField numberOfDays;
 
-    JButton endButton = new JButton("Start simulation");
+    private JButton endButton = new JButton("Start simulation");
 
 
     public LaunchPage(){

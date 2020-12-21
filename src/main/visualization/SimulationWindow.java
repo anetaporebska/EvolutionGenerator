@@ -1,6 +1,6 @@
 package main.visualization;
 
-
+import main.interfaces.ISimulationButton;
 import main.map.WorldParameters;
 import main.interfaces.IEngine;
 import main.map.WorldMap;
@@ -21,14 +21,12 @@ public class SimulationWindow implements ActionListener, Runnable {
     private MapPanel mapPanel;
 
 
-    private JButton stopButton = new JButton("Stop simulation");
-    private JButton startButton = new JButton("Start simulation");
-
-    private JButton followButton = new JButton("Choose animal to follow");
-    private JButton animalGenomeButton = new JButton("Choose animal to display genome");
-    private JButton dominantGenomeButton = new JButton("Animals with dominant genome");
-
-    private JButton followAnimalButton = new JButton("Start following");
+    private StopButton stopButton = new StopButton(this);
+    private StartButton startButton = new StartButton(this);
+    private FollowButton followButton = new FollowButton(this);
+    private AnimalGenomeButton animalGenomeButton = new AnimalGenomeButton(this);
+    private DominantGenomeButton dominantGenomeButton = new DominantGenomeButton(this);
+    private FollowAnimalButton followAnimalButton = new FollowAnimalButton(this);
 
     private JTextField numberOfDays = new JTextField();
     private Timer timer = new Timer(50 , this);
@@ -62,35 +60,6 @@ public class SimulationWindow implements ActionListener, Runnable {
         statisticsPanel.setBounds(0, 500, 500,200);
         frame.add(statisticsPanel);
 
-        stopButton.setBounds(0,700,300,50);
-        stopButton.setFocusable(false);
-        stopButton.addActionListener(this);
-
-        startButton.setBounds(0,900, 300, 50);
-        startButton.setFocusable(false);
-        startButton.setEnabled(false);
-        startButton.addActionListener(this);
-
-        followButton.setBounds(0,750, 300,50);
-        followButton.setFocusable(false);
-        followButton.addActionListener(this);
-        followButton.setEnabled(false);
-
-        animalGenomeButton.setBounds(0,800,300,50);
-        animalGenomeButton.setFocusable(false);
-        animalGenomeButton.addActionListener(this);
-        animalGenomeButton.setEnabled(false);
-
-        dominantGenomeButton.setBounds(0,850, 300,50);
-        dominantGenomeButton.setFocusable(false);
-        dominantGenomeButton.addActionListener(this);
-        dominantGenomeButton.setEnabled(false);
-
-        followAnimalButton.setBounds(350, 800, 150,50);
-        followAnimalButton.setFocusable(true);
-        followAnimalButton.setEnabled(false);
-        followAnimalButton.addActionListener(this);
-
         frame.add(stopButton);
         frame.add(startButton);
         frame.add(followButton);
@@ -100,8 +69,6 @@ public class SimulationWindow implements ActionListener, Runnable {
         frame.add(numberOfDays);
 
         numberOfDays.setVisible(false);
-        followAnimalButton.setVisible(false);
-
         frame.setLayout(null);
         frame.setVisible(true);
     }
@@ -109,59 +76,22 @@ public class SimulationWindow implements ActionListener, Runnable {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource()==stopButton){
-            timer.stop();
-            startButton.setEnabled(true);
-            stopButton.setEnabled(false);
-            followButton.setEnabled(true);
-            animalGenomeButton.setEnabled(true);
-            dominantGenomeButton.setEnabled(true);
+            stopButton.execute();
         }
         else if(actionEvent.getSource()==startButton){
-            startButton.setEnabled(false);
-            stopButton.setEnabled(true);
-            timer.start();
+            startButton.execute();
         }
         else if(actionEvent.getSource()==followButton){
-            followButton.setEnabled(false);
-            animalGenomeButton.setEnabled(false);
-            dominantGenomeButton.setEnabled(false);
-            mapPanel.addMouseListeners(false);
-
-            // get number of days
-            numberOfDays.setText("Number of days");
-            numberOfDays.setBounds(350, 750, 150, 50);
-            numberOfDays.setVisible(true);
-            followAnimalButton.setEnabled(true);
-            followAnimalButton.setVisible(true);
+            followButton.execute();
         }
         else if (actionEvent.getSource()==followAnimalButton){
-            if (mapPanel.checkFollow()){
-                try {
-                    String N = numberOfDays.getText();
-                    displayDay = convert(N) + day;
-                    this.follow = true;
-                } catch (NumberFormatException nfe) {
-                    System.out.println("NumberFormatException: " + nfe.getMessage());
-                    this.follow = false;
-                }
-            }
-            followAnimalButton.setEnabled(false);
-            followAnimalButton.setVisible(false);
-            numberOfDays.setVisible(false);
-
+            followAnimalButton.execute();
         }
         else if(actionEvent.getSource()==animalGenomeButton){
-            followButton.setEnabled(false);
-            animalGenomeButton.setEnabled(false);
-            dominantGenomeButton.setEnabled(false);
-            mapPanel.addMouseListeners(true);
+            animalGenomeButton.execute();
         }
         else if(actionEvent.getSource()==dominantGenomeButton){
-            followButton.setEnabled(false);
-            animalGenomeButton.setEnabled(false);
-            dominantGenomeButton.setEnabled(false);
-            mapPanel.displayDominant();
-            frame.repaint();
+            dominantGenomeButton.execute();
         }
         else {
             day+=1;
@@ -192,6 +122,152 @@ public class SimulationWindow implements ActionListener, Runnable {
         return argument;
 
     }
+
+
+    private class StopButton extends JButton implements ISimulationButton{
+
+
+        public StopButton(SimulationWindow simulationWindow){
+            this.setText("Stop simulation");
+            this.setBounds(0,700,300,50);
+            this.setFocusable(false);
+            this.addActionListener(simulationWindow);
+        }
+
+
+        @Override
+        public void execute() {
+            timer.stop();
+            startButton.setEnabled(true);
+            stopButton.setEnabled(false);
+            followButton.setEnabled(true);
+            animalGenomeButton.setEnabled(true);
+            dominantGenomeButton.setEnabled(true);
+        }
+
+
+    }
+
+    private class StartButton extends JButton implements ISimulationButton{
+
+        public StartButton(SimulationWindow simulationWindow){
+            this.setText("Start simulation");
+            this.setBounds(0,900, 300, 50);
+            this.setFocusable(false);
+            this.setEnabled(false);
+            this.addActionListener(simulationWindow);
+        }
+
+        @Override
+        public void execute() {
+            startButton.setEnabled(false);
+            stopButton.setEnabled(true);
+            timer.start();
+        }
+
+    }
+
+    private class FollowButton extends JButton implements ISimulationButton{
+
+        public FollowButton(SimulationWindow simulationWindow){
+            this.setText("Choose animal to follow");
+            this.setBounds(0,750, 300, 50);
+            this.setFocusable(false);
+            this.setEnabled(false);
+            this.addActionListener(simulationWindow);
+        }
+
+        @Override
+        public void execute() {
+            followButton.setEnabled(false);
+            animalGenomeButton.setEnabled(false);
+            dominantGenomeButton.setEnabled(false);
+            mapPanel.addMouseListeners(false);
+
+            // get number of days
+            numberOfDays.setText("Number of days");
+            numberOfDays.setBounds(350, 750, 150, 50);
+            numberOfDays.setVisible(true);
+            followAnimalButton.setEnabled(true);
+            followAnimalButton.setVisible(true);
+
+        }
+
+    }
+
+    private class AnimalGenomeButton extends JButton implements ISimulationButton{
+
+        public AnimalGenomeButton(SimulationWindow simulationWindow){
+            this.setText("Choose animal to display genome");
+            this.setBounds(0,800, 300, 50);
+            this.setFocusable(false);
+            this.setEnabled(false);
+            this.addActionListener(simulationWindow);
+        }
+
+        @Override
+        public void execute() {
+            followButton.setEnabled(false);
+            animalGenomeButton.setEnabled(false);
+            dominantGenomeButton.setEnabled(false);
+            mapPanel.addMouseListeners(true);
+
+        }
+
+    }
+
+    private class DominantGenomeButton extends JButton implements ISimulationButton{
+
+        public DominantGenomeButton(SimulationWindow simulationWindow){
+            this.setText("Animals with dominant genome");
+            this.setBounds(0,850, 300, 50);
+            this.setFocusable(false);
+            this.setEnabled(false);
+            this.addActionListener(simulationWindow);
+        }
+
+        @Override
+        public void execute() {
+            followButton.setEnabled(false);
+            animalGenomeButton.setEnabled(false);
+            dominantGenomeButton.setEnabled(false);
+            mapPanel.displayDominant();
+            frame.repaint();
+        }
+
+    }
+
+
+    private class FollowAnimalButton extends JButton implements ISimulationButton{
+
+        public FollowAnimalButton(SimulationWindow simulationWindow){
+            this.setText("Start following");
+            this.setBounds(350,800, 150, 50);
+            this.setFocusable(false);
+            this.setEnabled(false);
+            this.addActionListener(simulationWindow);
+            this.setVisible(false);
+        }
+
+        @Override
+        public void execute() {
+            if (mapPanel.checkFollow()){
+                try {
+                    String N = numberOfDays.getText();
+                    displayDay = convert(N) + day;
+                    follow = true;
+                } catch (NumberFormatException nfe) {
+                    System.out.println("NumberFormatException: " + nfe.getMessage());
+                    follow = false;
+                }
+            }
+            followAnimalButton.setEnabled(false);
+            followAnimalButton.setVisible(false);
+            numberOfDays.setVisible(false);
+        }
+
+    }
+
 
 
 }
