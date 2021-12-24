@@ -1,3 +1,5 @@
+package test;
+
 import main.math.Vector2d;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;

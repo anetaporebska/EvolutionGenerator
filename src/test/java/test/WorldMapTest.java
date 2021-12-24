@@ -1,3 +1,5 @@
+package test;
+
 import main.elements.Animal;
 import main.map.WorldMap;
 import main.math.Vector2d;

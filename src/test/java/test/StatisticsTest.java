@@ -1,3 +1,5 @@
+package test;
+
 import main.math.Statistics;
 import org.junit.jupiter.api.Test;
 

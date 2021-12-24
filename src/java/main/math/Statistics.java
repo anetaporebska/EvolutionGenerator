@@ -5,7 +5,6 @@ import main.elements.Grass;
 
 import java.util.*;
 
-// TODO Statistics jako 3 observer dla mapy? - tylko to już nie będzie positionChanged
 public class Statistics {
 
     // all animal statistics

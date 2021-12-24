@@ -1,3 +1,5 @@
+package test;
+
 import main.enums.AnimalOrientation;
 import main.math.Vector2d;
 import org.junit.jupiter.api.Test;

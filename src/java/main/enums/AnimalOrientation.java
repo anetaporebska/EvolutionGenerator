@@ -30,7 +30,6 @@ public enum AnimalOrientation {
                 return new Vector2d(-1,0);
             case NORTHWEST:
                 return new Vector2d(-1,1);
-
         }
         return null;
     }
