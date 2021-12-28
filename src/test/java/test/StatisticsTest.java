@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StatisticsTest {
 
@@ -30,6 +30,6 @@ public class StatisticsTest {
         animalGenomes.add(genome6);
 
         System.out.println(Arrays.toString( statistics.findDominantGenome(animalGenomes)));
-        assertEquals(true, Arrays.equals(statistics.findDominantGenome(animalGenomes), genome3));
+        assertArrayEquals(statistics.findDominantGenome(animalGenomes), genome3);
     }
 }

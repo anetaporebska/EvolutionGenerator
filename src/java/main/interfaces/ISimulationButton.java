@@ -1,7 +1,5 @@
 package main.interfaces;
 
-
-public interface ISimulationButton{
-
+public interface ISimulationButton {
     void execute();
 }

@@ -13,10 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FamilyTreeTest {
 
-    Vector2d position_1_1 = new Vector2d(1,1);
-    Vector2d position_3_3 = new Vector2d(3,3);
-    Vector2d position_1_3 = new Vector2d(1,3);
-
+    Vector2d position_1_1 = new Vector2d(1, 1);
+    Vector2d position_3_3 = new Vector2d(3, 3);
+    Vector2d position_1_3 = new Vector2d(1, 3);
 
     Map<Vector2d, ArrayList<Animal>> animals = new LinkedHashMap<>();
     ArrayList<Animal> arrayList1 = new ArrayList<>();
@@ -39,7 +38,7 @@ public class FamilyTreeTest {
 
     FamilyTree familyTree = new FamilyTree();
 
-    public void initialize(){
+    public void initialize() {
         arrayList1.add(A);
         arrayList1.add(C);
         arrayList2.add(B);
@@ -47,48 +46,41 @@ public class FamilyTreeTest {
 
         animals.put(position_1_1, arrayList1);
         animals.put(position_1_3, arrayList2);
-
-
-
     }
 
-
     @Test
-    public void numberOfChildrenTest(){
+    public void numberOfChildrenTest() {
         initialize();
         familyTree.addAncestors(animals);
 
-        assertEquals(0,familyTree.getNumberOfChildren(A));
-        assertEquals(0,familyTree.getNumberOfChildren(B));
-        assertEquals(0,familyTree.getNumberOfDescendants(A));
-        assertEquals(0,familyTree.getNumberOfDescendants(B));
+        assertEquals(0, familyTree.getNumberOfChildren(A));
+        assertEquals(0, familyTree.getNumberOfChildren(B));
+        assertEquals(0, familyTree.getNumberOfDescendants(A));
+        assertEquals(0, familyTree.getNumberOfDescendants(B));
 
-        familyTree.addChild(A,B,G);
-        familyTree.addChild(C,D,E);
-        familyTree.addChild(C,E,F);
+        familyTree.addChild(A, B, G);
+        familyTree.addChild(C, D, E);
+        familyTree.addChild(C, E, F);
 
-        assertEquals(1,familyTree.getNumberOfChildren(A));
-        assertEquals(2,familyTree.getNumberOfChildren(C));
-        assertEquals(2,familyTree.getNumberOfDescendants(D));
-        assertEquals(2,familyTree.getNumberOfDescendants(C));
+        assertEquals(1, familyTree.getNumberOfChildren(A));
+        assertEquals(2, familyTree.getNumberOfChildren(C));
+        assertEquals(2, familyTree.getNumberOfDescendants(D));
+        assertEquals(2, familyTree.getNumberOfDescendants(C));
 
-        familyTree.addChild(C,G,H);
-        familyTree.addChild(B,F,I);
-        familyTree.addChild(D,I,J);
-        familyTree.addChild(H,I,L);
-        familyTree.addChild(I,J,K);
+        familyTree.addChild(C, G, H);
+        familyTree.addChild(B, F, I);
+        familyTree.addChild(D, I, J);
+        familyTree.addChild(H, I, L);
+        familyTree.addChild(I, J, K);
 
-        assertEquals(1,familyTree.getNumberOfChildren(A));
-        assertEquals(3,familyTree.getNumberOfChildren(C));
-        assertEquals(6,familyTree.getNumberOfDescendants(D));
-        assertEquals(4,familyTree.getNumberOfDescendants(F));
+        assertEquals(1, familyTree.getNumberOfChildren(A));
+        assertEquals(3, familyTree.getNumberOfChildren(C));
+        assertEquals(6, familyTree.getNumberOfDescendants(D));
+        assertEquals(4, familyTree.getNumberOfDescendants(F));
 
-        assertEquals(0,familyTree.getNumberOfChildren(L));
-        assertEquals(2,familyTree.getNumberOfChildren(B));
-        assertEquals(6,familyTree.getNumberOfDescendants(B));
-        assertEquals(0,familyTree.getNumberOfDescendants(K));
-
-
+        assertEquals(0, familyTree.getNumberOfChildren(L));
+        assertEquals(2, familyTree.getNumberOfChildren(B));
+        assertEquals(6, familyTree.getNumberOfDescendants(B));
+        assertEquals(0, familyTree.getNumberOfDescendants(K));
     }
-
 }

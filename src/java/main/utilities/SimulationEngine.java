@@ -1,41 +1,40 @@
 package main.utilities;
 
-import main.map.WorldParameters;
 import main.elements.Animal;
 import main.interfaces.IEngine;
 import main.interfaces.IWorldMap;
+import main.map.WorldParameters;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationEngine implements IEngine {
 
-    private IWorldMap map;
-    private List<Animal> animals = new ArrayList<>();
-    private WorldParameters worldParameters;
+    private final IWorldMap map;
+    private final List<Animal> animals = new ArrayList<>();
 
 
-    public SimulationEngine(IWorldMap map, WorldParameters worldParameters){
+    public SimulationEngine(IWorldMap map) {
         this.map = map;
         this.map.addObserver(this);
-        this.worldParameters = worldParameters;
 
-        int n = worldParameters.getInitialNoGrass()/2;
-        for(int i=0; i<n; i+=1){
+        int n = WorldParameters.initialNoGrass / 2;
+        for (int i = 0; i < n; i += 1) {
             map.addGrass();
         }
-        for(int i=0; i< worldParameters.getInitialNoAnimals(); i+=1){
-            animals.add(map.placeAnimal(worldParameters.getInitialEnergy()));
+        for (int i = 0; i < WorldParameters.initialNoAnimals; i += 1) {
+            animals.add(map.placeAnimal(WorldParameters.initialEnergy));
         }
         this.map.initializeStatisticsTree();
     }
 
 
-    public void addAnimal(Animal animal){
+    public void addAnimal(Animal animal) {
         animals.add(animal);
     }
 
-    public void nextDay(){
-        int energyFromGrass = worldParameters.getEnergyFromGrass();
+    public void nextDay() {
+        int energyFromGrass = WorldParameters.energyFromGrass;
         removeDeadAnimals();
         map.updateAnimalOrientations();
         moveAnimals();
@@ -44,8 +43,8 @@ public class SimulationEngine implements IEngine {
         map.addGrass();
     }
 
-    private void moveAnimals(){
-        for (Animal animal: animals){
+    private void moveAnimals() {
+        for (Animal animal : animals) {
             animal.useEnergy(1);
             animal.moveForward();
             animal.changeAge();
@@ -53,20 +52,18 @@ public class SimulationEngine implements IEngine {
         }
     }
 
-
-    private void removeDeadAnimals(){
+    private void removeDeadAnimals() {
         List<Animal> animalsToDelete = new ArrayList<>();
-        for(Animal animal: animals){
-            if (animal.checkIfDead()){
+        for (Animal animal : animals) {
+            if (animal.checkIfDead()) {
                 map.removeAnimal(animal);
                 animalsToDelete.add(animal);
             }
         }
-        for(Animal animal: animalsToDelete){
+        for (Animal animal : animalsToDelete) {
             animals.remove(animal);
         }
         animalsToDelete.clear();
     }
-
 }
 

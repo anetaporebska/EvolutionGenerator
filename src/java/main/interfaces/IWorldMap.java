@@ -20,6 +20,7 @@ public interface IWorldMap {
     void updateAnimalOrientations();
 
     void eatGrass(int energyFromGrass);
+
     void removeAnimal(Animal animal);
 
     void reproductionOfAnimals();
@@ -27,6 +28,7 @@ public interface IWorldMap {
     void addObserver(IEngine engine);
 
     int getWorldWidth();
+
     int getWorldHeight();
 
     void notifyMapPanel(Vector2d position);
@@ -34,16 +36,16 @@ public interface IWorldMap {
     void updateStatistics();
 
     void initializeStatisticsTree();
+
     String displayAnimalGenome(Vector2d position);
+
     boolean addToFollow(Vector2d position);
+
     void removeToFollow();
+
     void checkIfAlive();
 
     boolean dominantAnimal(Vector2d position);
 
     Vector2d adjustPosition(Vector2d position);
-
-
-
-
 }

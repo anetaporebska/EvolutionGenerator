@@ -13,7 +13,6 @@ public class World {
         new LaunchPage();
 
 
-
         // read parameters from file and launch application
         /*
         WorldParameters worldParameters = new WorldParameters();

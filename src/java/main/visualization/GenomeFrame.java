@@ -3,7 +3,7 @@ import javax.swing.*;
 
 public class GenomeFrame extends JFrame {
 
-    GenomeFrame(String genome, int x, int y){
+    public GenomeFrame(String genome, int x, int y){
         JLabel textLabel = new JLabel("Animal on position ("+x+","+y+") has genome: ");
         textLabel.setBounds(0,0,550,100);
         JLabel genomeLabel = new JLabel(genome);
